@@ -121,7 +121,7 @@
 	<!-- Footer -->
 	<footer class="bg-gray-900 text-white">
 		<div class="container mx-auto px-4 py-12">
-			<div class="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
+			<div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
 				<!-- Contact -->
 				<div>
 					<h5 class="mb-4 text-lg font-semibold">Contact</h5>
@@ -183,27 +183,7 @@
 					</ul>
 				</div>
 
-				<!-- Nos services -->
-				<div>
-					<h5 class="mb-4 text-lg font-semibold">Nos services</h5>
-					<ul class="space-y-2 text-sm">
-						<li>
-							<a href="#services" class="text-gray-400 transition-colors hover:text-emerald-500"
-								>Scène 3D</a
-							>
-						</li>
-						<li>
-							<a href="#services" class="text-gray-400 transition-colors hover:text-emerald-500"
-								>Statistiques</a
-							>
-						</li>
-						<li>
-							<a href="#services" class="text-gray-400 transition-colors hover:text-emerald-500"
-								>Centralisation</a
-							>
-						</li>
-					</ul>
-				</div>
+				
 
 				<!-- Réseaux sociaux -->
 				<div>
