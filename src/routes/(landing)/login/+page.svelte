@@ -40,18 +40,11 @@
 	}
 </script>
 
-<div class="min-h-screen flex items-center justify-center bg-linear-to-br from-emerald-50 via-white to-emerald-50 px-4 py-12">
-	<div class="w-full max-w-md">
-		<!-- Logo -->
-		<div class="mb-8 text-center">
-			<a href="/" class="inline-block">
-				<img src={logoPEMD} alt="PEMD 360" class="mx-auto h-20 w-auto" />
-			</a>
-		</div>
-
+<div class="flex items-start justify-center bg-linear-to-br from-emerald-50 via-white to-emerald-50 px-4 pt-12 pb-4">
+	<div class="w-full max-w-md mb-4">
 		<!-- Card -->
 		<div class="rounded-2xl bg-white p-8 shadow-xl">
-			<div class="mb-8">
+			<div class="mb-6">
 				<h1 class="text-3xl font-bold text-gray-900">Bienvenue</h1>
 				<p class="mt-2 text-gray-600">Connectez-vous à votre compte</p>
 			</div>
@@ -141,18 +134,11 @@
 				</button>
 			</form>
 
-			<div class="mt-8 text-center">
-				<p class="text-sm text-gray-600">
-					Vous n'avez pas de compte ?
-					<a href="/signup" class="font-semibold text-emerald-600 hover:text-emerald-700">
-						Créer un compte
-					</a>
-				</p>
-			</div>
+			
 		</div>
 
 		<!-- Footer -->
-		<div class="mt-8 text-center">
+		<div class="mt-2 text-center">
 			<a href="/" class="text-sm text-gray-600 hover:text-emerald-600">
 				← Retour à l'accueil
 			</a>
