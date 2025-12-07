@@ -47,6 +47,10 @@
 		return () => clearInterval(autoplayInterval);
 	});
 </script>
+<svelte:head>
+	<title>PEMD 360</title>
+	<meta name="description" content="Contactez Dépollution Conseil pour vos projets de diagnostic PEMD. Nous sommes à votre écoute." />
+</svelte:head>
 
 <!-- Hero Carousel -->
 <section class="relative h-[600px] w-full overflow-hidden">
