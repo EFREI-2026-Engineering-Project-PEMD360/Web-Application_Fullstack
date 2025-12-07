@@ -1,15 +1,9 @@
 <script lang="ts">
-	import './layout.css';
-	import logoPEMD from '$lib/assets/img/PEMD 360.jpg';
-	import logoDC from '$lib/assets/img/Logo_DC.jpg';
 	import favicon from '$lib/assets/favicon.png';
-	import { authClient } from '$lib/auth-client';
+	import Header from '$lib/components/Header.svelte';
+	import Footer from '$lib/components/Footer.svelte';
 
-	let { children } = $props();
-	let mobileMenuOpen = $state(false);
-
-	// Vérifier si l'utilisateur est connecté
-	const session = authClient.useSession();
+	let { children, data } = $props();
 </script>
 
 <svelte:head>
@@ -24,13 +18,12 @@
 </svelte:head>
 
 <div class="flex min-h-screen flex-col font-[Poppins]">
-
-
+	<Header user={data.user} />
 
 	<!-- Main Content -->
 	<main class="flex-1">
 		{@render children()}
 	</main>
 
-
+	<Footer />
 </div>

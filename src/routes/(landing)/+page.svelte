@@ -4,6 +4,8 @@
 	import slideNumerisation from '$lib/assets/img/dépollution_8036_Copie.jpg';
 	import slideSuivi from '$lib/assets/img/suivi.jpg';
 	import slideDiagnostic from '$lib/assets/img/model_accueil.jpg';
+		import Header from '$lib/components/Header.svelte';
+	import Footer from '$lib/components/Footer.svelte';
 
 	// Carousel state
 	let currentSlide = $state(0);
@@ -51,6 +53,7 @@
 	<title>PEMD 360</title>
 	<meta name="description" content="Contactez Dépollution Conseil pour vos projets de diagnostic PEMD. Nous sommes à votre écoute." />
 </svelte:head>
+
 
 <!-- Hero Carousel -->
 <section class="relative h-[600px] w-full overflow-hidden">
