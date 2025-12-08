@@ -11,8 +11,8 @@
 	// Récupérer les données de session
 	const session = authClient.useSession();
 	
-	// Récupérer isAdmin depuis les données du serveur
-	const isAdmin = data.isAdmin;
+	// Récupérer isAdmin depuis les données du serveur avec $derived
+	const isAdmin = $derived(data.isAdmin);
 
 	// Sidebar state
 	let sidebarOpen = $state(true);
