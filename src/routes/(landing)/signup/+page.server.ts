@@ -33,6 +33,11 @@ export const actions = {
 			const existingUsers = await db.select().from(user);
 			const isFirstUser = existingUsers.length === 0;
 
+			// SÉCURITÉ : Bloquer l'inscription si des utilisateurs existent déjà
+			if (!isFirstUser) {
+				throw redirect(303, '/login');
+			}
+
 			// Créer l'utilisateur via better-auth API handler
 			const signupRequest = new Request(event.url.origin + '/api/auth/sign-up/email', {
 				method: 'POST',
