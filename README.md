@@ -1,38 +1,24 @@
-# sv
+# Setup
 
-Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
+`npm install`
 
-## Creating a project
+Create an .env with this content but just replace the R2 keys (ACCESS and SECRET KEY) by your account key:
 
-If you're seeing this, you've probably already done this step. Congrats!
+ https://dash.cloudflare.com/f3ce197a7566316351089c61b0c859b8/r2/api-tokens/create?type=user
 
-```sh
-# create a new project in the current directory
-npx sv create
+------
+`
+S3_API_URL=https://f3ce197a7566316351089c61b0c859b8.eu.r2.cloudflarestorage.com
+R2_ACCESS_KEY_ID=YOUR_KEY
+R2_SECRET_ACCESS_KEY=YOUR_KEY
+DATABASE_URL=./pemd360database.db
+BETTER_AUTH_SECRET=riKh1DMMlyZXdVwZB4KACLOjHGI2KZJE
+BETTER_AUTH_URL=http://localhost:5173`
 
-# create a new project in my-app
-npx sv create my-app
-```
+------
 
-## Developing
+`npx drizzle-kit migrate`
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+`npm run dev`
 
-```sh
-npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
-
-## Building
-
-To create a production version of your app:
-
-```sh
-npm run build
-```
-
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
+Go to [http://localhost:5173/signup] to create an admin account
