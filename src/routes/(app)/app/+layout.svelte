@@ -4,7 +4,7 @@
 	import { page } from '$app/stores';
 	import logoPEMD from '$lib/assets/img/PEMD 360.jpg';
 	import favicon from '$lib/assets/favicon.png';
-	import { Menu, Gauge, ClipboardList, ClipboardList as ClipboardListAlt, Grid3x3, FolderOpen, LogOut } from 'lucide-svelte';
+	import { Menu, Gauge, ClipboardList, ClipboardList as ClipboardListAlt, Grid3x3, FolderOpen, LogOut , ShieldUser} from 'lucide-svelte';
 
 	let { children, data } = $props();
 
@@ -29,6 +29,11 @@
 			label: 'Administration DB',
 			icon: Gauge,
 			adminOnly: true
+		},
+		{
+			href: '/app/admin-db',
+			label: 'Utilisateurs',
+			icon: ShieldUser
 		},
 		{
 			href: '/app/inventaire-risques',
