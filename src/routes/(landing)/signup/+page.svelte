@@ -1,7 +1,9 @@
 <script lang="ts">
-	import { authClient } from '$lib/auth-client';
+	import { enhance } from '$app/forms';
 	import { goto } from '$app/navigation';
 	import logoPEMD from '$lib/assets/img/PEMD 360.jpg';
+
+	let { form }: { form?: { error?: string; success?: boolean } } = $props();
 
 	let name = $state('');
 	let email = $state('');
@@ -27,46 +29,34 @@
 		return { level: 3, text: 'Fort', color: 'bg-emerald-500' };
 	});
 
-	async function handleSignup() {
+	// Afficher les erreurs du serveur
+	$effect(() => {
+		if (form?.error) {
+			error = form.error;
+		} else if (form?.success) {
+			goto('/login');
+		}
+	});
+
+	function validateForm() {
 		error = '';
 		
-		// Validation
 		if (!name || !email || !password) {
 			error = 'Tous les champs sont requis';
-			return;
+			return false;
 		}
 
 		if (password !== confirmPassword) {
 			error = 'Les mots de passe ne correspondent pas';
-			return;
+			return false;
 		}
 
 		if (password.length < 8) {
 			error = 'Le mot de passe doit contenir au moins 8 caractères';
-			return;
+			return false;
 		}
 
-		loading = true;
-
-		try {
-			const response = await authClient.signUp.email({
-				email,
-				password,
-				name,
-			});
-
-			if (response.error) {
-				error = response.error.message || 'Une erreur est survenue lors de l\'inscription';
-			} else {
-				// Inscription réussie, rediriger vers la page de connexion ou d'accueil
-				goto('/login');
-			}
-		} catch (e) {
-			error = 'Une erreur est survenue. Veuillez réessayer.';
-			console.error(e);
-		} finally {
-			loading = false;
-		}
+		return true;
 	}
 </script>
 
@@ -95,7 +85,22 @@
 				</div>
 			{/if}
 
-			<form onsubmit={(e) => { e.preventDefault(); handleSignup(); }} class="space-y-5">
+			<form 
+				method="POST"
+				use:enhance={() => {
+					if (!validateForm()) {
+						return async ({ update }) => {
+							await update({ reset: false });
+						};
+					}
+					loading = true;
+					return async ({ result, update }) => {
+						loading = false;
+						await update();
+					};
+				}}
+				class="space-y-5"
+			>
 				<div>
 					<label for="name" class="mb-2 block text-sm font-medium text-gray-700">
 						Nom complet
@@ -108,6 +113,7 @@
 						</div>
 						<input
 							id="name"
+							name="name"
 							type="text"
 							placeholder="Jean Dupont"
 							class="w-full rounded-lg border border-gray-300 py-3 pl-10 pr-4 text-gray-900 placeholder-gray-400 transition-all focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/20"
@@ -129,6 +135,7 @@
 						</div>
 						<input
 							id="email"
+							name="email"
 							type="email"
 							placeholder="vous@exemple.com"
 							class="w-full rounded-lg border border-gray-300 py-3 pl-10 pr-4 text-gray-900 placeholder-gray-400 transition-all focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/20"
@@ -150,6 +157,7 @@
 						</div>
 						<input
 							id="password"
+							name="password"
 							type={showPassword ? 'text' : 'password'}
 							placeholder="Minimum 8 caractères"
 							class="w-full rounded-lg border border-gray-300 py-3 pl-10 pr-12 text-gray-900 placeholder-gray-400 transition-all focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/20"
