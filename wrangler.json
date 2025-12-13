@@ -1,0 +1,16 @@
+{
+  "name": "pemd360",
+  "main": "src/index.ts",
+  "compatibility_date": "2024-09-26",
+  "compatibility_flags": [
+    "nodejs_compat"
+  ],
+  "d1_databases": [
+    {
+      "binding": "BINDING_NAME",
+      "database_name": "pemd360",
+      "database_id": "84c7b175-592d-4bd9-8b9f-9124a82e377c",
+      "migrations_dir": "drizzle/migrations"
+    }
+  ]
+}

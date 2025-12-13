@@ -1,4 +1,6 @@
-import { drizzle } from 'drizzle-orm/better-sqlite3';
-import { DATABASE_URL } from '$env/static/private';
+import { drizzle } from 'drizzle-orm/d1';
+export interface Env {
+  <BINDING_NAME>: D1Database;
+}
 
-export const db = drizzle({ connection: { source: DATABASE_URL } });
+export const db = drizzle(env.<BINDING_NAME>);
