@@ -1,11 +1,10 @@
-
 # Setup
 
-`npm install`
+```bash
+npm install
+```
 
-Create an .env with this content but just replace the R2 keys (ACCESS and SECRET KEY) by your account key:
-
- https://dash.cloudflare.com/f3ce197a7566316351089c61b0c859b8/r2/api-tokens/create?type=user
+(Create an .env with this content)[https://dash.cloudflare.com/f3ce197a7566316351089c61b0c859b8/r2/api-tokens/create?type=user] but just replace the R2 keys (ACCESS and SECRET KEY) by your account key:
 
 ------
 
@@ -18,8 +17,14 @@ Create an .env with this content but just replace the R2 keys (ACCESS and SECRET
 
 ------
 
-`npx drizzle-kit migrate`
+Create the database schema with Drizzle ORM
+```bash
+npx drizzle-kit migrate
+```
 
-`npm run dev`
+Run project
+```bash
+npm run dev
+```
 
-Go to [http://localhost:5173/signup] to create an admin account
+Go to (signup)[http://localhost:5173/signup] to create an admin account
