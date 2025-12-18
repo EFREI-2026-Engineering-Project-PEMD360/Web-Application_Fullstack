@@ -21,3 +21,13 @@ Thumbs.db
 # Vite
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
+
+# Working with a local database
+/database
+
+# lockfiles
+bun.lock
+deno.lock
+pnpm-lock.yaml
+yarn.lock
+# package-lock.json we keep i guess

@@ -111,6 +111,7 @@ export const accountRelations = relations(account, ({ one }) => ({
   }),
 }));
 
+
 export const categorieV2 = sqliteTable("categorie_v2", {
   id: integer().primaryKey({ autoIncrement: true }),
   groupeId: integer("groupe_id").notNull().references(() => groupe.id),
