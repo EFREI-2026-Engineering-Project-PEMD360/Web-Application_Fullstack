@@ -1,8 +1,8 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "f4707ac0-276f-4835-989c-b84e612e849d",
-  "prevId": "f963c09d-d6f7-421e-b98b-86720b681463",
+  "id": "7bc20039-6949-41d8-b0aa-c4b7a7cbc8d0",
+  "prevId": "f4707ac0-276f-4835-989c-b84e612e849d",
   "tables": {
     "account": {
       "name": "account",
@@ -192,7 +192,7 @@
         },
         "derniere_visite": {
           "name": "derniere_visite",
-          "type": "numeric",
+          "type": "integer",
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false
@@ -349,14 +349,14 @@
         },
         "date_debut_assurance": {
           "name": "date_debut_assurance",
-          "type": "numeric",
+          "type": "integer",
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false
         },
         "date_fin_assurance": {
           "name": "date_fin_assurance",
-          "type": "numeric",
+          "type": "integer",
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false
@@ -516,14 +516,14 @@
         },
         "date_de_debut": {
           "name": "date_de_debut",
-          "type": "numeric",
+          "type": "integer",
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false
         },
         "date_de_fin": {
           "name": "date_de_fin",
-          "type": "numeric",
+          "type": "integer",
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false
@@ -572,7 +572,7 @@
         },
         "date_permis_de_construire": {
           "name": "date_permis_de_construire",
-          "type": "numeric",
+          "type": "integer",
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false
@@ -617,7 +617,7 @@
         },
         "executed_at": {
           "name": "executed_at",
-          "type": "numeric",
+          "type": "integer",
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false
@@ -1048,7 +1048,7 @@
         },
         "date_demarrage": {
           "name": "date_demarrage",
-          "type": "numeric",
+          "type": "integer",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
@@ -1083,7 +1083,7 @@
         },
         "date_de_fin": {
           "name": "date_de_fin",
-          "type": "numeric",
+          "type": "integer",
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false
@@ -1397,7 +1397,7 @@
         },
         "date": {
           "name": "date",
-          "type": "numeric",
+          "type": "integer",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false

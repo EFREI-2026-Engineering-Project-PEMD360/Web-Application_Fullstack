@@ -1,8 +1,8 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "f4707ac0-276f-4835-989c-b84e612e849d",
-  "prevId": "f963c09d-d6f7-421e-b98b-86720b681463",
+  "id": "d0c6a508-639b-4f0d-a98b-6248804b7850",
+  "prevId": "7bc20039-6949-41d8-b0aa-c4b7a7cbc8d0",
   "tables": {
     "account": {
       "name": "account",
@@ -153,7 +153,15 @@
           "autoincrement": false
         }
       },
-      "indexes": {},
+      "indexes": {
+        "categorie_v2_groupe_id_idx": {
+          "name": "categorie_v2_groupe_id_idx",
+          "columns": [
+            "groupe_id"
+          ],
+          "isUnique": false
+        }
+      },
       "foreignKeys": {
         "categorie_v2_groupe_id_groupe_id_fk": {
           "name": "categorie_v2_groupe_id_groupe_id_fk",
@@ -192,7 +200,7 @@
         },
         "derniere_visite": {
           "name": "derniere_visite",
-          "type": "numeric",
+          "type": "integer",
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false
@@ -240,7 +248,15 @@
           "autoincrement": false
         }
       },
-      "indexes": {},
+      "indexes": {
+        "cerfa_diagnostic_projet_id_idx": {
+          "name": "cerfa_diagnostic_projet_id_idx",
+          "columns": [
+            "projet_id"
+          ],
+          "isUnique": false
+        }
+      },
       "foreignKeys": {
         "cerfa_diagnostic_projet_id_projet_id_fk": {
           "name": "cerfa_diagnostic_projet_id_projet_id_fk",
@@ -349,14 +365,14 @@
         },
         "date_debut_assurance": {
           "name": "date_debut_assurance",
-          "type": "numeric",
+          "type": "integer",
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false
         },
         "date_fin_assurance": {
           "name": "date_fin_assurance",
-          "type": "numeric",
+          "type": "integer",
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false
@@ -369,7 +385,15 @@
           "autoincrement": false
         }
       },
-      "indexes": {},
+      "indexes": {
+        "cerfa_diagnostiqueur_projet_id_idx": {
+          "name": "cerfa_diagnostiqueur_projet_id_idx",
+          "columns": [
+            "projet_id"
+          ],
+          "isUnique": false
+        }
+      },
       "foreignKeys": {
         "cerfa_diagnostiqueur_projet_id_projet_id_fk": {
           "name": "cerfa_diagnostiqueur_projet_id_projet_id_fk",
@@ -456,7 +480,15 @@
           "autoincrement": false
         }
       },
-      "indexes": {},
+      "indexes": {
+        "cerfa_mtr_ouvrage_projet_id_idx": {
+          "name": "cerfa_mtr_ouvrage_projet_id_idx",
+          "columns": [
+            "projet_id"
+          ],
+          "isUnique": false
+        }
+      },
       "foreignKeys": {
         "cerfa_mtr_ouvrage_projet_id_projet_id_fk": {
           "name": "cerfa_mtr_ouvrage_projet_id_projet_id_fk",
@@ -516,14 +548,14 @@
         },
         "date_de_debut": {
           "name": "date_de_debut",
-          "type": "numeric",
+          "type": "integer",
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false
         },
         "date_de_fin": {
           "name": "date_de_fin",
-          "type": "numeric",
+          "type": "integer",
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false
@@ -572,7 +604,7 @@
         },
         "date_permis_de_construire": {
           "name": "date_permis_de_construire",
-          "type": "numeric",
+          "type": "integer",
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false
@@ -585,7 +617,15 @@
           "autoincrement": false
         }
       },
-      "indexes": {},
+      "indexes": {
+        "cerfa_operation_projet_id_idx": {
+          "name": "cerfa_operation_projet_id_idx",
+          "columns": [
+            "projet_id"
+          ],
+          "isUnique": false
+        }
+      },
       "foreignKeys": {
         "cerfa_operation_projet_id_projet_id_fk": {
           "name": "cerfa_operation_projet_id_projet_id_fk",
@@ -617,7 +657,7 @@
         },
         "executed_at": {
           "name": "executed_at",
-          "type": "numeric",
+          "type": "integer",
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false
@@ -717,7 +757,15 @@
           "autoincrement": false
         }
       },
-      "indexes": {},
+      "indexes": {
+        "etablissement_id_societe_id_idx": {
+          "name": "etablissement_id_societe_id_idx",
+          "columns": [
+            "id_societe_id"
+          ],
+          "isUnique": false
+        }
+      },
       "foreignKeys": {
         "etablissement_id_societe_id_societe_id_fk": {
           "name": "etablissement_id_societe_id_societe_id_fk",
@@ -769,7 +817,15 @@
           "autoincrement": false
         }
       },
-      "indexes": {},
+      "indexes": {
+        "extrapolation_sid_id_idx": {
+          "name": "extrapolation_sid_id_idx",
+          "columns": [
+            "sid_id"
+          ],
+          "isUnique": false
+        }
+      },
       "foreignKeys": {
         "extrapolation_sid_id_projet_id_fk": {
           "name": "extrapolation_sid_id_projet_id_fk",
@@ -960,7 +1016,15 @@
           "autoincrement": false
         }
       },
-      "indexes": {},
+      "indexes": {
+        "objets_categorie_id_idx": {
+          "name": "objets_categorie_id_idx",
+          "columns": [
+            "categorie_id"
+          ],
+          "isUnique": false
+        }
+      },
       "foreignKeys": {
         "objets_categorie_id_categorie_v2_id_fk": {
           "name": "objets_categorie_id_categorie_v2_id_fk",
@@ -1020,7 +1084,7 @@
         },
         "code_insee": {
           "name": "code_insee",
-          "type": "integer",
+          "type": "text(5)",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
@@ -1048,7 +1112,7 @@
         },
         "date_demarrage": {
           "name": "date_demarrage",
-          "type": "numeric",
+          "type": "integer",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
@@ -1083,13 +1147,28 @@
         },
         "date_de_fin": {
           "name": "date_de_fin",
-          "type": "numeric",
+          "type": "integer",
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false
         }
       },
-      "indexes": {},
+      "indexes": {
+        "projet_id_etablissement_id_idx": {
+          "name": "projet_id_etablissement_id_idx",
+          "columns": [
+            "id_etablissement_id"
+          ],
+          "isUnique": false
+        },
+        "projet_id_etab_id_idx": {
+          "name": "projet_id_etab_id_idx",
+          "columns": [
+            "id_etab_id"
+          ],
+          "isUnique": false
+        }
+      },
       "foreignKeys": {
         "projet_id_etablissement_id_etablissement_id_fk": {
           "name": "projet_id_etablissement_id_etablissement_id_fk",
@@ -1140,7 +1219,15 @@
           "autoincrement": false
         }
       },
-      "indexes": {},
+      "indexes": {
+        "projet_user_user_id_idx": {
+          "name": "projet_user_user_id_idx",
+          "columns": [
+            "user_id"
+          ],
+          "isUnique": false
+        }
+      },
       "foreignKeys": {
         "projet_user_projet_id_projet_id_fk": {
           "name": "projet_user_projet_id_projet_id_fk",
@@ -1397,7 +1484,7 @@
         },
         "date": {
           "name": "date",
-          "type": "numeric",
+          "type": "integer",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
@@ -1431,7 +1518,22 @@
           "autoincrement": false
         }
       },
-      "indexes": {},
+      "indexes": {
+        "tag_mail_projet_id_id_idx": {
+          "name": "tag_mail_projet_id_id_idx",
+          "columns": [
+            "projet_id_id"
+          ],
+          "isUnique": false
+        },
+        "tag_mail_user_id_id_idx": {
+          "name": "tag_mail_user_id_id_idx",
+          "columns": [
+            "user_id_id"
+          ],
+          "isUnique": false
+        }
+      },
       "foreignKeys": {
         "tag_mail_projet_id_id_projet_id_fk": {
           "name": "tag_mail_projet_id_id_projet_id_fk",
@@ -1552,7 +1654,15 @@
           "autoincrement": false
         }
       },
-      "indexes": {},
+      "indexes": {
+        "tags_amiante_sid_id_idx": {
+          "name": "tags_amiante_sid_id_idx",
+          "columns": [
+            "sid_id"
+          ],
+          "isUnique": false
+        }
+      },
       "foreignKeys": {
         "tags_amiante_sid_id_projet_id_fk": {
           "name": "tags_amiante_sid_id_projet_id_fk",
@@ -1660,7 +1770,15 @@
           "autoincrement": false
         }
       },
-      "indexes": {},
+      "indexes": {
+        "tags_plomb_sid_id_idx": {
+          "name": "tags_plomb_sid_id_idx",
+          "columns": [
+            "sid_id"
+          ],
+          "isUnique": false
+        }
+      },
       "foreignKeys": {
         "tags_plomb_sid_id_projet_id_fk": {
           "name": "tags_plomb_sid_id_projet_id_fk",
@@ -1761,7 +1879,15 @@
           "autoincrement": false
         }
       },
-      "indexes": {},
+      "indexes": {
+        "tags_structure_sid_id_idx": {
+          "name": "tags_structure_sid_id_idx",
+          "columns": [
+            "sid_id"
+          ],
+          "isUnique": false
+        }
+      },
       "foreignKeys": {
         "tags_structure_sid_id_projet_id_fk": {
           "name": "tags_structure_sid_id_projet_id_fk",
@@ -1862,7 +1988,15 @@
           "autoincrement": false
         }
       },
-      "indexes": {},
+      "indexes": {
+        "tags_termite_sid_id_idx": {
+          "name": "tags_termite_sid_id_idx",
+          "columns": [
+            "sid_id"
+          ],
+          "isUnique": false
+        }
+      },
       "foreignKeys": {
         "tags_termite_sid_id_projet_id_fk": {
           "name": "tags_termite_sid_id_projet_id_fk",
@@ -2062,7 +2196,15 @@
           "autoincrement": false
         }
       },
-      "indexes": {},
+      "indexes": {
+        "user_legacy_id_etab_id_idx": {
+          "name": "user_legacy_id_etab_id_idx",
+          "columns": [
+            "id_etab_id"
+          ],
+          "isUnique": false
+        }
+      },
       "foreignKeys": {
         "user_legacy_id_etab_id_etablissement_id_fk": {
           "name": "user_legacy_id_etab_id_etablissement_id_fk",

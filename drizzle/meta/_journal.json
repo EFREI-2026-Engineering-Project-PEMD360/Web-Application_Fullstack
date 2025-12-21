@@ -5,15 +5,29 @@
     {
       "idx": 0,
       "version": "6",
-      "when": 1765186203716,
-      "tag": "0000_common_ogun",
+      "when": 1766340264258,
+      "tag": "0000_third_deadpool",
       "breakpoints": true
     },
     {
       "idx": 1,
       "version": "6",
-      "when": 1765624264422,
-      "tag": "0001_outstanding_bastion",
+      "when": 1766341023531,
+      "tag": "0001_wealthy_skrulls",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1766342557937,
+      "tag": "0002_confused_typhoid_mary",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "6",
+      "when": 1766343782817,
+      "tag": "0003_chief_nebula",
       "breakpoints": true
     }
   ]

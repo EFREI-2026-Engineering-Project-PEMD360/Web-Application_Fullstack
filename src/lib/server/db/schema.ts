@@ -1,5 +1,5 @@
 import { relations, sql } from "drizzle-orm";
-import { sqliteTable, text, integer, index, real, numeric, primaryKey } from "drizzle-orm/sqlite-core";
+import { sqliteTable, text, integer, index, real, primaryKey } from "drizzle-orm/sqlite-core";
 
 export const user = sqliteTable("user", {
   id: text("id").primaryKey(),
@@ -111,13 +111,11 @@ export const accountRelations = relations(account, ({ one }) => ({
   }),
 }));
 
-
-
 // --- Migrations & Système ---
 
 export const doctrineMigrationVersions = sqliteTable('doctrine_migration_versions', {
   version: text('version', { length: 191 }).primaryKey(),
-  executedAt: numeric('executed_at'),
+  executedAt: integer('executed_at', { mode: 'timestamp_ms' }),
   executionTime: integer('execution_time'),
 });
 
@@ -128,13 +126,27 @@ export const groupe = sqliteTable('groupe', {
   groupe: text('groupe', { length: 255 }).notNull(),
 });
 
+export const groupeRelations = relations(groupe, ({ many }) => ({
+  categories: many(categorieV2),
+}));
+
 export const categorieV2 = sqliteTable('categorie_v2', {
   id: integer('id').primaryKey({ autoIncrement: true }),
   groupeId: integer('groupe_id')
     .notNull()
     .references(() => groupe.id),
   categoriev2: text('categoriev2', { length: 255 }).notNull(),
-});
+}, (table) => ({
+  groupeIdIdx: index('categorie_v2_groupe_id_idx').on(table.groupeId), // Opt 3
+}));
+
+export const categorieV2Relations = relations(categorieV2, ({ one, many }) => ({
+  groupe: one(groupe, {
+    fields: [categorieV2.groupeId],
+    references: [groupe.id],
+  }),
+  objets: many(objets),
+}));
 
 export const natureV2 = sqliteTable('nature_v2', {
   id: integer('id').primaryKey({ autoIncrement: true }),
@@ -161,7 +173,16 @@ export const objets = sqliteTable('objets', {
   deposeReemlpoi: text('depose_reemlpoi'),
   deposeDechet: text('depose_dechet'),
   masseUnitaire: text('masse_unitaire', { length: 255 }),
-});
+}, (table) => ({
+  categorieIdIdx: index('objets_categorie_id_idx').on(table.categorieId), // Opt 3
+}));
+
+export const objetsRelations = relations(objets, ({ one }) => ({
+  categorie: one(categorieV2, {
+    fields: [objets.categorieId],
+    references: [categorieV2.id],
+  }),
+}));
 
 // --- Sociétés & Établissements ---
 
@@ -179,6 +200,10 @@ export const societe = sqliteTable('societe', {
   type: integer('type').notNull(),
 });
 
+export const societeRelations = relations(societe, ({ many }) => ({
+  etablissements: many(etablissement),
+}));
+
 export const etablissement = sqliteTable('etablissement', {
   id: integer('id').primaryKey({ autoIncrement: true }),
   idSocieteId: integer('id_societe_id')
@@ -193,7 +218,18 @@ export const etablissement = sqliteTable('etablissement', {
   fax: text('fax', { length: 255 }).notNull(),
   email: text('email', { length: 255 }).notNull(),
   siret: text('siret', { length: 255 }).notNull(),
-});
+}, (table) => ({
+  idSocieteIdIdx: index('etablissement_id_societe_id_idx').on(table.idSocieteId), // Opt 3
+}));
+
+export const etablissementRelations = relations(etablissement, ({ one, many }) => ({
+  societe: one(societe, {
+    fields: [etablissement.idSocieteId],
+    references: [societe.id],
+  }),
+  projets: many(projet, { relationName: 'etablissementProjets' }),
+  users: many(userLegacy),
+}));
 
 // --- Projets & Diagnostics ---
 
@@ -205,29 +241,60 @@ export const projet = sqliteTable('projet', {
     .references(() => etablissement.id),
   libelle: text('libelle', { length: 255 }).notNull(),
   reference: text('reference', { length: 255 }).notNull(),
-  codeInsee: integer('code_insee').notNull(),
+  codeInsee: text('code_insee', { length: 5 }).notNull(), // Opt 4 : Changé en text
   rue: text('rue', { length: 255 }).notNull(),
   cp: integer('cp').notNull(),
   ville: text('ville', { length: 255 }).notNull(),
-  dateDemarrage: numeric('date_demarrage').notNull(),
+  dateDemarrage: integer('date_demarrage', { mode: 'timestamp_ms' }).notNull(),
   section: text('section', { length: 10 }).notNull(),
   parcelle: text('parcelle', { length: 10 }).notNull(),
   typeOperation: text('type_operation', { length: 255 }),
   maitreDOuvrage: text('maitre_d_ouvrage', { length: 255 }),
-  dateDeFin: numeric('date_de_fin'),
-});
+  dateDeFin: integer('date_de_fin', { mode: 'timestamp_ms' }),
+}, (table) => ({
+  idEtablissementIdIdx: index('projet_id_etablissement_id_idx').on(table.idEtablissementId), // Opt 3
+  idEtabIdIdx: index('projet_id_etab_id_idx').on(table.idEtabId), // Opt 3
+}));
+
+export const projetRelations = relations(projet, ({ one, many }) => ({
+  etablissement: one(etablissement, {
+    fields: [projet.idEtabId],
+    references: [etablissement.id],
+    relationName: 'etablissementProjets',
+  }),
+  cerfaDiagnostics: many(cerfaDiagnostic),
+  cerfaDiagnostiqueurs: many(cerfaDiagnostiqueur),
+  cerfaMtrOuvrages: many(cerfaMtrOuvrage),
+  cerfaOperations: many(cerfaOperation),
+  extrapolations: many(extrapolation),
+  tagsAmiante: many(tagsAmiante),
+  tagsPlomb: many(tagsPlomb),
+  tagsStructure: many(tagsStructure),
+  tagsTermite: many(tagsTermite),
+  users: many(projetUser),
+  tagMails: many(tagMail),
+}));
 
 export const cerfaDiagnostic = sqliteTable('cerfa_diagnostic', {
   id: integer('id').primaryKey({ autoIncrement: true }),
   projetId: text('projet_id', { length: 50 }).references(() => projet.id),
-  derniereVisite: numeric('derniere_visite'),
+  derniereVisite: integer('derniere_visite', { mode: 'timestamp_ms' }),
   batNonVisite: text('bat_non_visite'),
   raisonsNePasVisite: text('raisons_ne_pas_visite'),
   desordres: integer('desordres'),
   precaution: integer('precaution'),
   documentConsultes: text('document_consultés'),
   batVisite: text('bat_visite'),
-});
+}, (table) => ({
+  projetIdIdx: index('cerfa_diagnostic_projet_id_idx').on(table.projetId), // Opt 3
+}));
+
+export const cerfaDiagnosticRelations = relations(cerfaDiagnostic, ({ one }) => ({
+  projet: one(projet, {
+    fields: [cerfaDiagnostic.projetId],
+    references: [projet.id],
+  }),
+}));
 
 export const cerfaDiagnostiqueur = sqliteTable('cerfa_diagnostiqueur', {
   id: integer('id').primaryKey({ autoIncrement: true }),
@@ -242,10 +309,19 @@ export const cerfaDiagnostiqueur = sqliteTable('cerfa_diagnostiqueur', {
   engagementAssurance: integer('engagement_assurance'),
   nomAssurance: text('nom_assurance', { length: 255 }),
   numeroPolice: text('numero_police', { length: 255 }),
-  dateDebutAssurance: numeric('date_debut_assurance'),
-  dateFinAssurance: numeric('date_fin_assurance'),
+  dateDebutAssurance: integer('date_debut_assurance', { mode: 'timestamp_ms' }),
+  dateFinAssurance: integer('date_fin_assurance', { mode: 'timestamp_ms' }),
   competences: integer('competences'),
-});
+}, (table) => ({
+  projetIdIdx: index('cerfa_diagnostiqueur_projet_id_idx').on(table.projetId), // Opt 3
+}));
+
+export const cerfaDiagnostiqueurRelations = relations(cerfaDiagnostiqueur, ({ one }) => ({
+  projet: one(projet, {
+    fields: [cerfaDiagnostiqueur.projetId],
+    references: [projet.id],
+  }),
+}));
 
 export const cerfaMtrOuvrage = sqliteTable('cerfa_mtr_ouvrage', {
   id: integer('id').primaryKey({ autoIncrement: true }),
@@ -257,7 +333,16 @@ export const cerfaMtrOuvrage = sqliteTable('cerfa_mtr_ouvrage', {
   adresse: text('adresse', { length: 255 }),
   cp: real('cp'),
   commune: text('commune', { length: 255 }),
-});
+}, (table) => ({
+  projetIdIdx: index('cerfa_mtr_ouvrage_projet_id_idx').on(table.projetId), // Opt 3
+}));
+
+export const cerfaMtrOuvrageRelations = relations(cerfaMtrOuvrage, ({ one }) => ({
+  projet: one(projet, {
+    fields: [cerfaMtrOuvrage.projetId],
+    references: [projet.id],
+  }),
+}));
 
 export const cerfaOperation = sqliteTable('cerfa_operation', {
   id: integer('id').primaryKey({ autoIncrement: true }),
@@ -265,17 +350,26 @@ export const cerfaOperation = sqliteTable('cerfa_operation', {
   adresse: text('adresse', { length: 500 }),
   cp: text('cp', { length: 255 }),
   commune: text('commune', { length: 255 }),
-  dateDeDebut: numeric('date_de_debut'),
-  dateDeFin: numeric('date_de_fin'),
+  dateDeDebut: integer('date_de_debut', { mode: 'timestamp_ms' }),
+  dateDeFin: integer('date_de_fin', { mode: 'timestamp_ms' }),
   operation: text('operation'),
   nbBatDemolition: real('nb_bat_demolition'),
   surfaceADemolir: real('surface_a_demolir'),
   nbBatRenovation: real('nb_bat_renovation'),
   surfaceARenover: real('surface_a_renover'),
   typologieBat: text('typologie_bat'),
-  datePermisDeConstruire: numeric('date_permis_de_construire'),
+  datePermisDeConstruire: integer('date_permis_de_construire', { mode: 'timestamp_ms' }),
   operationSoumis: text('operation_soumis'),
-});
+}, (table) => ({
+  projetIdIdx: index('cerfa_operation_projet_id_idx').on(table.projetId), // Opt 3
+}));
+
+export const cerfaOperationRelations = relations(cerfaOperation, ({ one }) => ({
+  projet: one(projet, {
+    fields: [cerfaOperation.projetId],
+    references: [projet.id],
+  }),
+}));
 
 export const extrapolation = sqliteTable('extrapolation', {
   id: integer('id').primaryKey({ autoIncrement: true }),
@@ -284,7 +378,16 @@ export const extrapolation = sqliteTable('extrapolation', {
     .references(() => projet.id),
   extrapolationData: text('extrapolation_data').notNull(),
   constitution: text('constitution', { length: 10000 }),
-});
+}, (table) => ({
+  sidIdIdx: index('extrapolation_sid_id_idx').on(table.sidId), // Opt 3
+}));
+
+export const extrapolationRelations = relations(extrapolation, ({ one }) => ({
+  projet: one(projet, {
+    fields: [extrapolation.sidId],
+    references: [projet.id],
+  }),
+}));
 
 // --- Tags & Analyse ---
 
@@ -303,7 +406,16 @@ export const tagsAmiante = sqliteTable('tags_amiante', {
   brusharray: text('brusharray'),
   customImage: text('custom_image').notNull(),
   etage: text('etage', { length: 100 }).notNull(),
-});
+}, (table) => ({
+  sidIdIdx: index('tags_amiante_sid_id_idx').on(table.sidId), // Opt 3
+}));
+
+export const tagsAmianteRelations = relations(tagsAmiante, ({ one }) => ({
+  projet: one(projet, {
+    fields: [tagsAmiante.sidId],
+    references: [projet.id],
+  }),
+}));
 
 export const tagsPlomb = sqliteTable('tags_plomb', {
   id: text('id', { length: 50 }).primaryKey(),
@@ -320,7 +432,16 @@ export const tagsPlomb = sqliteTable('tags_plomb', {
   brusharray: text('brusharray'),
   customImage: text('custom_image').notNull(),
   etage: text('etage', { length: 100 }).notNull(),
-});
+}, (table) => ({
+  sidIdIdx: index('tags_plomb_sid_id_idx').on(table.sidId), // Opt 3
+}));
+
+export const tagsPlombRelations = relations(tagsPlomb, ({ one }) => ({
+  projet: one(projet, {
+    fields: [tagsPlomb.sidId],
+    references: [projet.id],
+  }),
+}));
 
 export const tagsStructure = sqliteTable('tags_structure', {
   id: text('id', { length: 50 }).primaryKey(),
@@ -336,7 +457,16 @@ export const tagsStructure = sqliteTable('tags_structure', {
   customImage: text('custom_image').notNull(),
   screenSurface: text('screen_surface'),
   shapeSurface: real('shape_surface'),
-});
+}, (table) => ({
+  sidIdIdx: index('tags_structure_sid_id_idx').on(table.sidId), // Opt 3
+}));
+
+export const tagsStructureRelations = relations(tagsStructure, ({ one }) => ({
+  projet: one(projet, {
+    fields: [tagsStructure.sidId],
+    references: [projet.id],
+  }),
+}));
 
 export const tagsTermite = sqliteTable('tags_termite', {
   id: text('id', { length: 50 }).primaryKey(),
@@ -352,7 +482,16 @@ export const tagsTermite = sqliteTable('tags_termite', {
   brusharray: text('brusharray'),
   customImage: text('custom_image').notNull(),
   etage: text('etage', { length: 100 }).notNull(),
-});
+}, (table) => ({
+  sidIdIdx: index('tags_termite_sid_id_idx').on(table.sidId), // Opt 3
+}));
+
+export const tagsTermiteRelations = relations(tagsTermite, ({ one }) => ({
+  projet: one(projet, {
+    fields: [tagsTermite.sidId],
+    references: [projet.id],
+  }),
+}));
 
 // --- Utilisateurs & Relations ---
 
@@ -370,7 +509,18 @@ export const userLegacy = sqliteTable('user_legacy', {
   cp: text('cp', { length: 255 }),
   ville: text('ville', { length: 255 }),
   tel: text('tel', { length: 255 }),
-});
+}, (table) => ({
+  idEtabIdIdx: index('user_legacy_id_etab_id_idx').on(table.idEtabId), // Opt 3
+}));
+
+export const userLegacyRelations = relations(userLegacy, ({ one, many }) => ({
+  etablissement: one(etablissement, {
+    fields: [userLegacy.idEtabId],
+    references: [etablissement.id],
+  }),
+  projets: many(projetUser),
+  tagMails: many(tagMail),
+}));
 
 export const projetUser = sqliteTable(
   'projet_user',
@@ -384,8 +534,21 @@ export const projetUser = sqliteTable(
   },
   (table) => ({
     pk: primaryKey({ columns: [table.projetId, table.userId] }),
+    // Les FK sont dans la PK, mais userId a besoin d'un index pour les lookups inversés
+    userIdIdx: index('projet_user_user_id_idx').on(table.userId), // Opt 3
   })
 );
+
+export const projetUserRelations = relations(projetUser, ({ one }) => ({
+  projet: one(projet, {
+    fields: [projetUser.projetId],
+    references: [projet.id],
+  }),
+  user: one(userLegacy, {
+    fields: [projetUser.userId],
+    references: [userLegacy.id],
+  }),
+}));
 
 export const tagMail = sqliteTable('tag_mail', {
   id: text('id', { length: 255 }).primaryKey(),
@@ -395,9 +558,23 @@ export const tagMail = sqliteTable('tag_mail', {
   userIdId: integer('user_id_id')
     .notNull()
     .references(() => userLegacy.id),
-  date: numeric('date').notNull(),
+  date: integer('date', { mode: 'timestamp_ms' }).notNull(),
   content: text('content').notNull(),
   stemVector: text('stem_vector', { length: 1000 }).notNull(),
   anchorPosition: text('anchor_position', { length: 1000 }).notNull(),
   destinataires: text('destinataires', { length: 300 }).notNull(),
-});
+}, (table) => ({
+  projetIdIdIdx: index('tag_mail_projet_id_id_idx').on(table.projetIdId), // Opt 3
+  userIdIdIdx: index('tag_mail_user_id_id_idx').on(table.userIdId), // Opt 3
+}));
+
+export const tagMailRelations = relations(tagMail, ({ one }) => ({
+  projet: one(projet, {
+    fields: [tagMail.projetIdId],
+    references: [projet.id],
+  }),
+  user: one(userLegacy, {
+    fields: [tagMail.userIdId],
+    references: [userLegacy.id],
+  }),
+}));
