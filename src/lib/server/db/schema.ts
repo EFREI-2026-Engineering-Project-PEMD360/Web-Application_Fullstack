@@ -1,5 +1,5 @@
 import { relations, sql } from "drizzle-orm";
-import { sqliteTable, text, integer, index, uniqueIndex, numeric, real, primaryKey } from "drizzle-orm/sqlite-core";
+import { sqliteTable, text, integer, index, real, numeric, primaryKey } from "drizzle-orm/sqlite-core";
 
 export const user = sqliteTable("user", {
   id: text("id").primaryKey(),
@@ -112,431 +112,292 @@ export const accountRelations = relations(account, ({ one }) => ({
 }));
 
 
-export const categorieV2 = sqliteTable("categorie_v2", {
-  id: integer().primaryKey({ autoIncrement: true }),
-  groupeId: integer("groupe_id").notNull().references(() => groupe.id),
-  categoriev2: text({ length: 255 }).notNull(),
-},
-  (table) => [
-    index("IDX_F3A71D727A45358C").on(table.groupeId),
-  ]);
 
-export const cerfaDiagnostic = sqliteTable("cerfa_diagnostic", {
-  id: integer().primaryKey({ autoIncrement: true }),
-  projetId: text("projet_id", { length: 50 }).references(() => projet.id),
-  derniereVisite: numeric("derniere_visite"),
-  batNonVisite: text("bat_non_visite"),
-  raisonsNePasVisite: text("raisons_ne_pas_visite"),
-  desordres: integer(),
-  precaution: integer(),
-  "documentConsultés": text("document_consultés"),
-  batVisite: text("bat_visite"),
-},
-  (table) => [
-    uniqueIndex("UNIQ_69DB1259C18272").on(table.projetId),
-  ]);
+// --- Migrations & Système ---
 
-export const cerfaDiagnostiqueur = sqliteTable("cerfa_diagnostiqueur", {
-  id: integer().primaryKey({ autoIncrement: true }),
-  projetId: text("projet_id", { length: 50 }).references(() => projet.id),
-  nomPerPhy: text("nom_per_phy", { length: 255 }),
-  prenomPerPhy: text("prenom_per_phy", { length: 255 }),
-  nomPerMorale: text("nom_per_morale", { length: 255 }),
-  siretSiren: text("siret_siren", { length: 255 }),
-  adresse: text({ length: 255 }),
-  cp: text({ length: 255 }),
-  commune: text({ length: 255 }),
-  engagementAssurance: integer("engagement_assurance"),
-  nomAssurance: text("nom_assurance", { length: 255 }),
-  numeroPolice: text("numero_police", { length: 255 }),
-  dateDebutAssurance: numeric("date_debut_assurance"),
-  dateFinAssurance: numeric("date_fin_assurance"),
-  competences: integer(),
-},
-  (table) => [
-    uniqueIndex("UNIQ_3ADF2D26C18272").on(table.projetId),
-  ]);
-
-export const cerfaMtrOuvrage = sqliteTable("cerfa_mtr_ouvrage", {
-  id: integer().primaryKey({ autoIncrement: true }),
-  projetId: text("projet_id", { length: 50 }).references(() => projet.id),
-  nomPerPhy: text("nom_per_phy", { length: 255 }),
-  prenomPerPhy: text("prenom_per_phy", { length: 255 }),
-  nomPerMorale: text("nom_per_morale", { length: 255 }),
-  siretSiren: text("siret_siren", { length: 255 }),
-  adresse: text({ length: 255 }),
-  cp: real(),
-  commune: text({ length: 255 }),
-},
-  (table) => [
-    uniqueIndex("UNIQ_14B224E0C18272").on(table.projetId),
-  ]);
-
-export const cerfaOperation = sqliteTable("cerfa_operation", {
-  id: integer().primaryKey({ autoIncrement: true }),
-  projetId: text("projet_id", { length: 50 }).references(() => projet.id),
-  adresse: text({ length: 500 }),
-  cp: text({ length: 255 }),
-  commune: text({ length: 255 }),
-  dateDeDebut: numeric("date_de_debut"),
-  dateDeFin: numeric("date_de_fin"),
-  operation: text(),
-  nbBatDemolition: real("nb_bat_demolition"),
-  surfaceADemolir: real("surface_a_demolir"),
-  nbBatRenovation: real("nb_bat_renovation"),
-  surfaceARenover: real("surface_a_renover"),
-  typologieBat: text("typologie_bat"),
-  datePermisDeConstruire: numeric("date_permis_de_construire"),
-  operationSoumis: text("operation_soumis"),
-},
-  (table) => [
-    uniqueIndex("UNIQ_B7E4EBE0C18272").on(table.projetId),
-  ]);
-
-export const dechets = sqliteTable("dechets", {
-  id: integer().primaryKey({ autoIncrement: true }),
-  dechet: text({ length: 100 }).notNull(),
+export const doctrineMigrationVersions = sqliteTable('doctrine_migration_versions', {
+  version: text('version', { length: 191 }).primaryKey(),
+  executedAt: numeric('executed_at'),
+  executionTime: integer('execution_time'),
 });
 
-export const doctrineMigrationVersions = sqliteTable("doctrine_migration_versions", {
-  version: text({ length: 191 }).primaryKey().notNull(),
-  executedAt: numeric("executed_at"),
-  executionTime: integer("execution_time"),
+// --- Données de base ---
+
+export const groupe = sqliteTable('groupe', {
+  id: integer('id').primaryKey({ autoIncrement: true }),
+  groupe: text('groupe', { length: 255 }).notNull(),
 });
 
-export const etablissement = sqliteTable("etablissement", {
-  id: integer().primaryKey({ autoIncrement: true }),
-  idSocieteId: integer("id_societe_id").notNull().references(() => societe.id),
-  nom: text({ length: 255 }).notNull(),
-  raisonSocial: text("raison_social", { length: 50 }).notNull(),
-  rue: text({ length: 255 }).notNull(),
-  cp: text({ length: 5 }).notNull(),
-  ville: text({ length: 255 }).notNull(),
-  tel: text({ length: 255 }).notNull(),
-  fax: text({ length: 255 }).notNull(),
-  email: text({ length: 255 }).notNull(),
-  siret: text({ length: 255 }).notNull(),
-},
-  (table) => [
-    index("IDX_20FD592C597DF5D4").on(table.idSocieteId),
-  ]);
-
-export const extrapolation = sqliteTable("extrapolation", {
-  id: integer().primaryKey({ autoIncrement: true }),
-  sidId: text("sid_id", { length: 50 }).notNull().references(() => projet.id),
-  extrapolationData: text("extrapolation_data").notNull(),
-  constitution: text({ length: 10000 }),
-},
-  (table) => [
-    uniqueIndex("UNIQ_284FF9E58512B786").on(table.sidId),
-  ]);
-
-export const groupe = sqliteTable("groupe", {
-  id: integer().primaryKey({ autoIncrement: true }),
-  groupe: text({ length: 255 }).notNull(),
+export const categorieV2 = sqliteTable('categorie_v2', {
+  id: integer('id').primaryKey({ autoIncrement: true }),
+  groupeId: integer('groupe_id')
+    .notNull()
+    .references(() => groupe.id),
+  categoriev2: text('categoriev2', { length: 255 }).notNull(),
 });
 
-export const label = sqliteTable("label", {
-  id: integer().primaryKey({ autoIncrement: true }),
-  label: text({ length: 255 }).notNull(),
+export const natureV2 = sqliteTable('nature_v2', {
+  id: integer('id').primaryKey({ autoIncrement: true }),
+  nature: text('nature', { length: 255 }).notNull(),
+  reutilisation: integer('reutilisation'),
+  recyclable: integer('recyclable'),
+  valorisationMatiere: integer('valorisation_matiere'),
+  valorisationEnergetique: integer('valorisation_energetique'),
+  densite: real('densite'),
+  stockage: text('stockage', { length: 100 }),
+  codeDechet: integer('code_dechet'),
+  ecoOrganismeRep: text('eco_organisme_rep', { length: 255 }),
+  incinerationSansValorisationEnergetique: integer('incineration_sans_valorisation_energetique'),
+  nonValorisation: integer('non_valorisation'),
 });
 
-export const media = sqliteTable("media", {
-  id: integer().primaryKey({ autoIncrement: true }),
-  floor: text({ length: 255 }).notNull(),
-  sid: text({ length: 255 }).notNull(),
-  content: text().notNull(),
+export const objets = sqliteTable('objets', {
+  id: integer('id').primaryKey({ autoIncrement: true }),
+  categorieId: integer('categorie_id')
+    .notNull()
+    .references(() => categorieV2.id),
+  objet: text('objet', { length: 255 }).notNull(),
+  unite: text('unite', { length: 100 }),
+  deposeReemlpoi: text('depose_reemlpoi'),
+  deposeDechet: text('depose_dechet'),
+  masseUnitaire: text('masse_unitaire', { length: 255 }),
 });
 
-export const nature = sqliteTable("nature", {
-  id: integer().primaryKey({ autoIncrement: true }),
-  nature: text({ length: 255 }).notNull(),
+// --- Sociétés & Établissements ---
+
+export const societe = sqliteTable('societe', {
+  id: integer('id').primaryKey({ autoIncrement: true }),
+  nom: text('nom', { length: 255 }).notNull(),
+  raisonSocial: text('raison_social', { length: 255 }).notNull(),
+  rue: text('rue', { length: 255 }).notNull(),
+  cp: text('cp', { length: 5 }).notNull(),
+  ville: text('ville', { length: 255 }).notNull(),
+  tel: text('tel', { length: 15 }).notNull(),
+  fax: text('fax', { length: 15 }).notNull(),
+  email: text('email', { length: 255 }).notNull(),
+  siren: text('siren', { length: 255 }),
+  type: integer('type').notNull(),
 });
 
-export const natureV2 = sqliteTable("nature_v2", {
-  id: integer().primaryKey({ autoIncrement: true }),
-  nature: text({ length: 255 }).notNull(),
-  reutilisation: integer(),
-  recyclable: integer(),
-  valorisationMatiere: integer("valorisation_matiere"),
-  valorisationEnergetique: integer("valorisation_energetique"),
-  densite: real(),
-  stockage: text({ length: 100 }),
-  codeDechet: integer("code_dechet"),
-  ecoOrganismeRep: text("eco_organisme_rep", { length: 255 }),
-  incinerationSansValorisationEnergetique: integer("incineration_sans_valorisation_energetique"),
-  nonValorisation: integer("non_valorisation"),
+export const etablissement = sqliteTable('etablissement', {
+  id: integer('id').primaryKey({ autoIncrement: true }),
+  idSocieteId: integer('id_societe_id')
+    .notNull()
+    .references(() => societe.id),
+  nom: text('nom', { length: 255 }).notNull(),
+  raisonSocial: text('raison_social', { length: 50 }).notNull(),
+  rue: text('rue', { length: 255 }).notNull(),
+  cp: text('cp', { length: 5 }).notNull(),
+  ville: text('ville', { length: 255 }).notNull(),
+  tel: text('tel', { length: 255 }).notNull(),
+  fax: text('fax', { length: 255 }).notNull(),
+  email: text('email', { length: 255 }).notNull(),
+  siret: text('siret', { length: 255 }).notNull(),
 });
 
-export const objets = sqliteTable("objets", {
-  id: integer().primaryKey({ autoIncrement: true }),
-  categorieId: integer("categorie_id").notNull().references(() => categorieV2.id),
-  objet: text({ length: 255 }).notNull(),
-  unite: text({ length: 100 }),
-  deposeReemlpoi: text("depose_reemlpoi"),
-  deposeDechet: text("depose_dechet"),
-  masseUnitaire: text("masse_unitaire", { length: 255 }),
-},
-  (table) => [
-    index("IDX_334ABAD9BCF5E72D").on(table.categorieId),
-  ]);
+// --- Projets & Diagnostics ---
 
-export const operationProjet = sqliteTable("operation_projet", {
-  id: integer().primaryKey({ autoIncrement: true }),
-  projetId: text("projet_id", { length: 50 }).references(() => projet.id),
-  type: text({ length: 255 }).notNull(),
-  intervenant: text({ length: 255 }).notNull(),
-  dateDeDebut: numeric("date_de_debut"),
-  dateDeFin: numeric("date_de_fin"),
-  observation: text(),
-},
-  (table) => [
-    index("IDX_2D9525CBC18272").on(table.projetId),
-  ]);
-
-export const pemd = sqliteTable("pemd", {
-  id: text({ length: 255 }).primaryKey().notNull(),
-  natureId: integer("nature_id").notNull().references(() => natureV2.id),
-  objetId: integer("objet_id").notNull().references(() => objets.id),
-  sidId: text("sid_id", { length: 50 }).notNull().references(() => projet.id),
-  description: text({ length: 255 }),
-  quantite: real(),
-  potentielReemploi: text("potentiel_reemploi", { length: 255 }),
-  longueur: real(),
-  largeur: real(),
-  epaisseur: real(),
-  volume: real(),
-  reemploi: integer(),
-  etage: text({ length: 255 }).notNull(),
-  constitution: text({ length: 100 }),
-  masse: real(),
-  etat: text({ length: 100 }),
-  anchorPosition: text("anchor_position", { length: 500 }).notNull(),
-  stemVector: text("stem_vector", { length: 500 }).notNull(),
-  color: text({ length: 255 }),
-  image: text().notNull(),
-  surface: real(),
-  dimension: text({ length: 255 }).notNull(),
-  amiante: integer(),
-  plombifere: integer(),
-  termite: integer(),
-  typologieAppart: text("typologie_appart", { length: 255 }).notNull(),
-  estimationAge: text("estimation_age", { length: 255 }),
-  typeAssemblage: text("type_assemblage", { length: 255 }),
-},
-  (table) => [
-    index("IDX_9EEBC6E0F520CF5A").on(table.objetId),
-    index("IDX_9EEBC6E08512B786").on(table.sidId),
-    index("IDX_9EEBC6E03BCB2E4B").on(table.natureId),
-  ]);
-
-export const projet = sqliteTable("projet", {
-  id: text({ length: 50 }).primaryKey().notNull(),
-  idEtablissementId: integer("id_etablissement_id").references(() => etablissement.id),
-  idEtabId: integer("id_etab_id").notNull().references(() => etablissement.id),
-  libelle: text({ length: 255 }).notNull(),
-  reference: text({ length: 255 }).notNull(),
-  codeInsee: integer("code_insee").notNull(),
-  rue: text({ length: 255 }).notNull(),
-  cp: integer().notNull(),
-  ville: text({ length: 255 }).notNull(),
-  dateDemarrage: numeric("date_demarrage").notNull(),
-  section: text({ length: 10 }).notNull(),
-  parcelle: text({ length: 10 }).notNull(),
-  typeOperation: text("type_operation", { length: 255 }),
-  maitreDOuvrage: text("maitre_d_ouvrage", { length: 255 }),
-  dateDeFin: numeric("date_de_fin"),
-},
-  (table) => [
-    index("IDX_50159CA9A6B127CC").on(table.idEtabId),
-    index("IDX_50159CA91CE947F9").on(table.idEtablissementId),
-  ]);
-
-export const projetUser = sqliteTable("projet_user", {
-  projetId: text("projet_id", { length: 50 }).notNull().references(() => projet.id, { onDelete: "cascade" }),
-  userId: integer("user_id").notNull().references(() => userLegacy.id, { onDelete: "cascade" }),
-},
-  (table) => [
-    index("IDX_FA413966C18272").on(table.projetId),
-    index("IDX_FA413966A76ED395").on(table.userId),
-    primaryKey({ columns: [table.projetId, table.userId], name: "projet_user_projet_id_user_id_pk" })
-  ]);
-
-export const qrcode = sqliteTable("qrcode", {
-  id: integer().primaryKey({ autoIncrement: true }),
-  tagId: text("tag_id", { length: 255 }).notNull().references(() => pemd.id, { onDelete: "cascade" }),
-  action: text().notNull(),
-},
-  (table) => [
-    index("IDX_A4FF23ECBAD26311").on(table.tagId),
-  ]);
-
-export const societe = sqliteTable("societe", {
-  id: integer().primaryKey({ autoIncrement: true }),
-  nom: text({ length: 255 }).notNull(),
-  raisonSocial: text("raison_social", { length: 255 }).notNull(),
-  rue: text({ length: 255 }).notNull(),
-  cp: text({ length: 5 }).notNull(),
-  ville: text({ length: 255 }).notNull(),
-  tel: text({ length: 15 }).notNull(),
-  fax: text({ length: 15 }).notNull(),
-  email: text({ length: 255 }).notNull(),
-  siren: text({ length: 255 }),
-  type: integer().notNull(),
+export const projet = sqliteTable('projet', {
+  id: text('id', { length: 50 }).primaryKey(),
+  idEtablissementId: integer('id_etablissement_id').references(() => etablissement.id),
+  idEtabId: integer('id_etab_id')
+    .notNull()
+    .references(() => etablissement.id),
+  libelle: text('libelle', { length: 255 }).notNull(),
+  reference: text('reference', { length: 255 }).notNull(),
+  codeInsee: integer('code_insee').notNull(),
+  rue: text('rue', { length: 255 }).notNull(),
+  cp: integer('cp').notNull(),
+  ville: text('ville', { length: 255 }).notNull(),
+  dateDemarrage: numeric('date_demarrage').notNull(),
+  section: text('section', { length: 10 }).notNull(),
+  parcelle: text('parcelle', { length: 10 }).notNull(),
+  typeOperation: text('type_operation', { length: 255 }),
+  maitreDOuvrage: text('maitre_d_ouvrage', { length: 255 }),
+  dateDeFin: numeric('date_de_fin'),
 });
 
-export const sousCategorie = sqliteTable("sous_categorie", {
-  id: integer().primaryKey({ autoIncrement: true }),
-  categorieId: integer("categorie_id").notNull().references(() => categorieV2.id),
-  sousCategorie: text("sous_categorie", { length: 255 }).notNull(),
-},
-  (table) => [
-    index("IDX_52743D7BBCF5E72D").on(table.categorieId),
-  ]);
+export const cerfaDiagnostic = sqliteTable('cerfa_diagnostic', {
+  id: integer('id').primaryKey({ autoIncrement: true }),
+  projetId: text('projet_id', { length: 50 }).references(() => projet.id),
+  derniereVisite: numeric('derniere_visite'),
+  batNonVisite: text('bat_non_visite'),
+  raisonsNePasVisite: text('raisons_ne_pas_visite'),
+  desordres: integer('desordres'),
+  precaution: integer('precaution'),
+  documentConsultes: text('document_consultés'),
+  batVisite: text('bat_visite'),
+});
 
-export const structure = sqliteTable("structure", {
-  id: integer().primaryKey({ autoIncrement: true }),
-  objetId: integer("objet_id").notNull().references(() => objets.id),
-  sidId: text("sid_id", { length: 50 }).notNull().references(() => projet.id),
-  natureId: integer("nature_id").notNull().references(() => natureV2.id),
-  reference: text({ length: 255 }).notNull(),
-  description: text({ length: 255 }),
-  reemploi: integer(),
-  potentielReemploi: real("potentiel_reemploi"),
-  epaisseur: real(),
-  surface: real(),
-  volume: real(),
-  masse: real(),
-  etage: text({ length: 255 }).notNull(),
-  constitution: text({ length: 255 }).notNull(),
-  etat: text({ length: 255 }),
-  type: text({ length: 255 }).notNull(),
-  amiante: integer(),
-  plomb: integer(),
-  couche: text({ length: 255 }).notNull(),
-  quantite: integer(),
-},
-  (table) => [
-    index("IDX_6F0137EAF520CF5A").on(table.objetId),
-    index("IDX_6F0137EA8512B786").on(table.sidId),
-    index("IDX_6F0137EA3BCB2E4B").on(table.natureId),
-  ]);
+export const cerfaDiagnostiqueur = sqliteTable('cerfa_diagnostiqueur', {
+  id: integer('id').primaryKey({ autoIncrement: true }),
+  projetId: text('projet_id', { length: 50 }).references(() => projet.id),
+  nomPerPhy: text('nom_per_phy', { length: 255 }),
+  prenomPerPhy: text('prenom_per_phy', { length: 255 }),
+  nomPerMorale: text('nom_per_morale', { length: 255 }),
+  siretSiren: text('siret_siren', { length: 255 }),
+  adresse: text('adresse', { length: 255 }),
+  cp: text('cp', { length: 255 }),
+  commune: text('commune', { length: 255 }),
+  engagementAssurance: integer('engagement_assurance'),
+  nomAssurance: text('nom_assurance', { length: 255 }),
+  numeroPolice: text('numero_police', { length: 255 }),
+  dateDebutAssurance: numeric('date_debut_assurance'),
+  dateFinAssurance: numeric('date_fin_assurance'),
+  competences: integer('competences'),
+});
 
-export const tagMail = sqliteTable("tag_mail", {
-  id: text({ length: 255 }).primaryKey().notNull(),
-  projetIdId: text("projet_id_id", { length: 50 }).notNull().references(() => projet.id),
-  userIdId: integer("user_id_id").notNull().references(() => userLegacy.id),
-  date: numeric().notNull(),
-  content: text().notNull(),
-  stemVector: text("stem_vector", { length: 1000 }).notNull(),
-  anchorPosition: text("anchor_position", { length: 1000 }).notNull(),
-  destinataires: text({ length: 300 }).notNull(),
-},
-  (table) => [
-    index("IDX_BF2913FED4E271E1").on(table.projetIdId),
-    index("IDX_BF2913FE9D86650F").on(table.userIdId),
-  ]);
+export const cerfaMtrOuvrage = sqliteTable('cerfa_mtr_ouvrage', {
+  id: integer('id').primaryKey({ autoIncrement: true }),
+  projetId: text('projet_id', { length: 50 }).references(() => projet.id),
+  nomPerPhy: text('nom_per_phy', { length: 255 }),
+  prenomPerPhy: text('prenom_per_phy', { length: 255 }),
+  nomPerMorale: text('nom_per_morale', { length: 255 }),
+  siretSiren: text('siret_siren', { length: 255 }),
+  adresse: text('adresse', { length: 255 }),
+  cp: real('cp'),
+  commune: text('commune', { length: 255 }),
+});
 
-export const tags = sqliteTable("tags", {
-  id: text({ length: 255 }).primaryKey().notNull(),
-  projetIdId: text("projet_id_id", { length: 50 }).references(() => projet.id),
-  sidId: text("sid_id", { length: 50 }).notNull().references(() => projet.id),
-  label: text({ length: 100 }).notNull(),
-  description: text({ length: 255 }).notNull(),
-  anchorPosition: text("anchor_position", { length: 300 }).notNull(),
-  stemVector: text("stem_vector", { length: 300 }).notNull(),
-  color: text({ length: 255 }).notNull(),
-  image: text().notNull(),
-},
-  (table) => [
-    index("IDX_6FBC9426D4E271E1").on(table.projetIdId),
-    index("IDX_6FBC94268512B786").on(table.sidId),
-  ]);
+export const cerfaOperation = sqliteTable('cerfa_operation', {
+  id: integer('id').primaryKey({ autoIncrement: true }),
+  projetId: text('projet_id', { length: 50 }).references(() => projet.id),
+  adresse: text('adresse', { length: 500 }),
+  cp: text('cp', { length: 255 }),
+  commune: text('commune', { length: 255 }),
+  dateDeDebut: numeric('date_de_debut'),
+  dateDeFin: numeric('date_de_fin'),
+  operation: text('operation'),
+  nbBatDemolition: real('nb_bat_demolition'),
+  surfaceADemolir: real('surface_a_demolir'),
+  nbBatRenovation: real('nb_bat_renovation'),
+  surfaceARenover: real('surface_a_renover'),
+  typologieBat: text('typologie_bat'),
+  datePermisDeConstruire: numeric('date_permis_de_construire'),
+  operationSoumis: text('operation_soumis'),
+});
 
-export const tagsAmiante = sqliteTable("tags_amiante", {
-  id: text({ length: 50 }).primaryKey().notNull(),
-  sidId: text("sid_id", { length: 50 }).notNull().references(() => projet.id),
-  label: text({ length: 255 }).notNull(),
-  description: text({ length: 255 }).notNull(),
-  anchorPosition: text("anchor_position", { length: 300 }).notNull(),
-  stemVector: text("stem_vector", { length: 255 }).notNull(),
-  image: text().notNull(),
-  presenceAmiante: integer("presence_amiante").notNull(),
-  type: text({ length: 255 }).notNull(),
-  brusharray: text(),
-  customImage: text("custom_image").notNull(),
-  etage: text({ length: 100 }).notNull(),
-},
-  (table) => [
-    index("IDX_10125EF8512B786").on(table.sidId),
-  ]);
+export const extrapolation = sqliteTable('extrapolation', {
+  id: integer('id').primaryKey({ autoIncrement: true }),
+  sidId: text('sid_id', { length: 50 })
+    .notNull()
+    .references(() => projet.id),
+  extrapolationData: text('extrapolation_data').notNull(),
+  constitution: text('constitution', { length: 10000 }),
+});
 
-export const tagsPlomb = sqliteTable("tags_plomb", {
-  id: text({ length: 50 }).primaryKey().notNull(),
-  sidId: text("sid_id", { length: 50 }).notNull().references(() => projet.id),
-  label: text({ length: 255 }).notNull(),
-  description: text({ length: 500 }).notNull(),
-  anchorPosition: text("anchor_position", { length: 500 }).notNull(),
-  stemVector: text("stem_vector", { length: 500 }).notNull(),
-  image: text().notNull(),
-  presencePlomb: integer("presence_plomb").notNull(),
-  concentration: integer(),
-  brusharray: text(),
-  customImage: text("custom_image").notNull(),
-  etage: text({ length: 100 }).notNull(),
-},
-  (table) => [
-    index("IDX_150030B28512B786").on(table.sidId),
-  ]);
+// --- Tags & Analyse ---
 
-export const tagsStructure = sqliteTable("tags_structure", {
-  id: text({ length: 50 }).primaryKey().notNull(),
-  sidId: text("sid_id", { length: 50 }).notNull().references(() => projet.id),
-  label: text({ length: 255 }).notNull(),
-  description: text({ length: 500 }).notNull(),
-  anchorPosition: text("anchor_position", { length: 500 }).notNull(),
-  stemVector: text("stem_vector", { length: 500 }).notNull(),
-  image: text().notNull(),
-  brusharray: text(),
-  customImage: text("custom_image").notNull(),
-  screenSurface: text("screen_surface"),
-  shapeSurface: real("shape_surface"),
-},
-  (table) => [
-    index("IDX_B0009B68512B786").on(table.sidId),
-  ]);
+export const tagsAmiante = sqliteTable('tags_amiante', {
+  id: text('id', { length: 50 }).primaryKey(),
+  sidId: text('sid_id', { length: 50 })
+    .notNull()
+    .references(() => projet.id),
+  label: text('label', { length: 255 }).notNull(),
+  description: text('description', { length: 255 }).notNull(),
+  anchorPosition: text('anchor_position', { length: 300 }).notNull(),
+  stemVector: text('stem_vector', { length: 255 }).notNull(),
+  image: text('image').notNull(),
+  presenceAmiante: integer('presence_amiante').notNull(),
+  type: text('type', { length: 255 }).notNull(),
+  brusharray: text('brusharray'),
+  customImage: text('custom_image').notNull(),
+  etage: text('etage', { length: 100 }).notNull(),
+});
 
-export const tagsTermite = sqliteTable("tags_termite", {
-  id: text({ length: 50 }).primaryKey().notNull(),
-  sidId: text("sid_id", { length: 50 }).notNull().references(() => projet.id),
-  label: text({ length: 255 }).notNull(),
-  description: text({ length: 500 }).notNull(),
-  anchorPosition: text("anchor_position", { length: 500 }).notNull(),
-  stemVector: text("stem_vector", { length: 500 }).notNull(),
-  image: text().notNull(),
-  presenceTermite: integer("presence_termite").notNull(),
-  brusharray: text(),
-  customImage: text("custom_image").notNull(),
-  etage: text({ length: 100 }).notNull(),
-},
-  (table) => [
-    index("IDX_801D1B458512B786").on(table.sidId),
-  ]);
+export const tagsPlomb = sqliteTable('tags_plomb', {
+  id: text('id', { length: 50 }).primaryKey(),
+  sidId: text('sid_id', { length: 50 })
+    .notNull()
+    .references(() => projet.id),
+  label: text('label', { length: 255 }).notNull(),
+  description: text('description', { length: 500 }).notNull(),
+  anchorPosition: text('anchor_position', { length: 500 }).notNull(),
+  stemVector: text('stem_vector', { length: 500 }).notNull(),
+  image: text('image').notNull(),
+  presencePlomb: integer('presence_plomb').notNull(),
+  concentration: integer('concentration'),
+  brusharray: text('brusharray'),
+  customImage: text('custom_image').notNull(),
+  etage: text('etage', { length: 100 }).notNull(),
+});
 
-export const userLegacy = sqliteTable("user_legacy", {
-  id: integer().primaryKey({ autoIncrement: true }),
-  idEtabId: integer("id_etab_id").notNull().references(() => etablissement.id),
-  email: text({ length: 180 }).notNull(),
-  roles: text().notNull(),
-  password: text({ length: 255 }).notNull(),
-  nom: text({ length: 255 }).notNull(),
-  prenom: text({ length: 255 }),
-  rue: text({ length: 255 }),
-  cp: text({ length: 255 }),
-  ville: text({ length: 255 }),
-  tel: text({ length: 255 }),
-},
-  (table) => [
-    uniqueIndex("UNIQ_8D93D649E7927C74").on(table.email),
-    index("IDX_8D93D649A6B127CC").on(table.idEtabId),
-  ]);
+export const tagsStructure = sqliteTable('tags_structure', {
+  id: text('id', { length: 50 }).primaryKey(),
+  sidId: text('sid_id', { length: 50 })
+    .notNull()
+    .references(() => projet.id),
+  label: text('label', { length: 255 }).notNull(),
+  description: text('description', { length: 500 }).notNull(),
+  anchorPosition: text('anchor_position', { length: 500 }).notNull(),
+  stemVector: text('stem_vector', { length: 500 }).notNull(),
+  image: text('image').notNull(),
+  brusharray: text('brusharray'),
+  customImage: text('custom_image').notNull(),
+  screenSurface: text('screen_surface'),
+  shapeSurface: real('shape_surface'),
+});
+
+export const tagsTermite = sqliteTable('tags_termite', {
+  id: text('id', { length: 50 }).primaryKey(),
+  sidId: text('sid_id', { length: 50 })
+    .notNull()
+    .references(() => projet.id),
+  label: text('label', { length: 255 }).notNull(),
+  description: text('description', { length: 500 }).notNull(),
+  anchorPosition: text('anchor_position', { length: 500 }).notNull(),
+  stemVector: text('stem_vector', { length: 500 }).notNull(),
+  image: text('image').notNull(),
+  presenceTermite: integer('presence_termite').notNull(),
+  brusharray: text('brusharray'),
+  customImage: text('custom_image').notNull(),
+  etage: text('etage', { length: 100 }).notNull(),
+});
+
+// --- Utilisateurs & Relations ---
+
+export const userLegacy = sqliteTable('user_legacy', {
+  id: integer('id').primaryKey({ autoIncrement: true }),
+  idEtabId: integer('id_etab_id')
+    .notNull()
+    .references(() => etablissement.id),
+  email: text('email', { length: 180 }).notNull(),
+  roles: text('roles').notNull(),
+  password: text('password', { length: 255 }).notNull(),
+  nom: text('nom', { length: 255 }).notNull(),
+  prenom: text('prenom', { length: 255 }),
+  rue: text('rue', { length: 255 }),
+  cp: text('cp', { length: 255 }),
+  ville: text('ville', { length: 255 }),
+  tel: text('tel', { length: 255 }),
+});
+
+export const projetUser = sqliteTable(
+  'projet_user',
+  {
+    projetId: text('projet_id', { length: 50 })
+      .notNull()
+      .references(() => projet.id, { onDelete: 'cascade' }),
+    userId: integer('user_id')
+      .notNull()
+      .references(() => userLegacy.id, { onDelete: 'cascade' }),
+  },
+  (table) => ({
+    pk: primaryKey({ columns: [table.projetId, table.userId] }),
+  })
+);
+
+export const tagMail = sqliteTable('tag_mail', {
+  id: text('id', { length: 255 }).primaryKey(),
+  projetIdId: text('projet_id_id', { length: 50 })
+    .notNull()
+    .references(() => projet.id),
+  userIdId: integer('user_id_id')
+    .notNull()
+    .references(() => userLegacy.id),
+  date: numeric('date').notNull(),
+  content: text('content').notNull(),
+  stemVector: text('stem_vector', { length: 1000 }).notNull(),
+  anchorPosition: text('anchor_position', { length: 1000 }).notNull(),
+  destinataires: text('destinataires', { length: 300 }).notNull(),
+});
