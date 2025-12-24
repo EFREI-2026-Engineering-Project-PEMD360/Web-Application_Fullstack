@@ -1,9 +1,9 @@
 <script lang="ts">
-	import logoDC from '$lib/assets/img/Logo_DC.jpg';
+	import logoDC from '$lib/assets/img/depollution_conseil.png';
 
 	const services = [
 		'Numérisation de bâtiments',
-		'Création d\'un jumeau numérique',
+		"Création d'un jumeau numérique",
 		'Plan 2D / DWG',
 		'Réalisation du diagnostic PEMD',
 		'Estimation de la masse des déchets',
@@ -13,7 +13,10 @@
 
 <svelte:head>
 	<title>À propos - PEMD 360</title>
-	<meta name="description" content="Découvrez Dépollution Conseil, bureau d'études spécialisé en Sites et Sols Pollués depuis 2014." />
+	<meta
+		name="description"
+		content="Découvrez Dépollution Conseil, bureau d'études spécialisé en Sites et Sols Pollués depuis 2014."
+	/>
 </svelte:head>
 
 <!-- Hero Banner -->
@@ -29,7 +32,9 @@
 				<li>
 					<a href="/" class="flex items-center gap-2 transition-colors hover:text-emerald-400">
 						<svg class="h-4 w-4" fill="currentColor" viewBox="0 0 20 20">
-							<path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
+							<path
+								d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"
+							/>
 						</svg>
 						Accueil
 					</a>
@@ -54,19 +59,21 @@
 
 			<!-- Content -->
 			<div>
-				<span class="mb-2 inline-block text-sm font-semibold uppercase tracking-wider text-emerald-600">
+				<span
+					class="mb-2 inline-block text-sm font-semibold uppercase tracking-wider text-emerald-600"
+				>
 					Qui sommes-nous ?
 				</span>
 				<h2 class="mb-6 text-3xl font-bold text-gray-900 lg:text-4xl">Dépollution Conseil</h2>
-				
+
 				<div class="space-y-4 text-gray-600">
 					<p class="text-justify leading-relaxed">
-						Depuis 2014, Dépollution Conseil, c'est avant tout un savoir-faire rigoureux, des études 
+						Depuis 2014, Dépollution Conseil, c'est avant tout un savoir-faire rigoureux, des études
 						précises et un accompagnement soigné mis en œuvre pour mener à bien vos projets.
 					</p>
 					<p class="text-justify leading-relaxed">
-						Bureau d'études spécialisé en Sites et Sols Pollués, nous vous accompagnons dans la 
-						prospection de pollution, l'évaluation des risques et l'identification de solutions de 
+						Bureau d'études spécialisé en Sites et Sols Pollués, nous vous accompagnons dans la
+						prospection de pollution, l'évaluation des risques et l'identification de solutions de
 						gestion adaptées à vos besoins.
 					</p>
 				</div>
@@ -75,7 +82,11 @@
 				<div class="my-8 grid grid-cols-1 gap-3 sm:grid-cols-2">
 					{#each services as service}
 						<div class="flex items-center gap-2 text-sm text-gray-600">
-							<svg class="h-5 w-5 shrink-0 text-emerald-500" fill="currentColor" viewBox="0 0 20 20">
+							<svg
+								class="h-5 w-5 shrink-0 text-emerald-500"
+								fill="currentColor"
+								viewBox="0 0 20 20"
+							>
 								<path
 									fill-rule="evenodd"
 									d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
@@ -106,18 +117,20 @@
 <section class="bg-gray-50 py-16 lg:py-24">
 	<div class="container mx-auto px-4">
 		<div class="mx-auto max-w-3xl text-center">
-			<span class="mb-2 inline-block text-sm font-semibold uppercase tracking-wider text-emerald-600">
+			<span
+				class="mb-2 inline-block text-sm font-semibold uppercase tracking-wider text-emerald-600"
+			>
 				Vers une économie circulaire
 			</span>
 			<h2 class="mb-6 text-3xl font-bold text-gray-900 lg:text-4xl">
 				Dépollution Conseil vous propose une solution innovante
 			</h2>
 			<p class="text-lg leading-relaxed text-gray-600">
-				Depuis 2021, nous proposons un nouveau service dans le domaine de l'économie circulaire. 
-				Cette nouvelle branche a permis la création d'une application web permettant d'élaborer 
-				des diagnostics Produits, Équipements, Matériaux et Déchets (PEMD) en ligne.
+				Depuis 2021, nous proposons un nouveau service dans le domaine de l'économie circulaire.
+				Cette nouvelle branche a permis la création d'une application web permettant d'élaborer des
+				diagnostics Produits, Équipements, Matériaux et Déchets (PEMD) en ligne.
 			</p>
-			
+
 			<!-- CTA Button -->
 			<div class="mt-8">
 				<a

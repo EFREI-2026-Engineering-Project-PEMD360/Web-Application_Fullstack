@@ -1,6 +1,6 @@
 <script lang="ts">
-	import logoPEMD from '$lib/assets/img/PEMD 360.jpg';
-	import logoDC from '$lib/assets/img/Logo_DC.jpg';
+	import logoPEMD from '$lib/assets/img/pemd360.png';
+	import logoDC from '$lib/assets/img/depollution_conseil.png';
 
 	let { user = null } = $props<{ user: any }>();
 	let mobileMenuOpen = $state(false);
@@ -24,9 +24,8 @@
 				<a href="/" class="font-medium text-gray-700 transition-colors hover:text-emerald-600"
 					>Accueil</a
 				>
-				<a
-					href="/about"
-					class="font-medium text-gray-700 transition-colors hover:text-emerald-600">À propos</a
+				<a href="/about" class="font-medium text-gray-700 transition-colors hover:text-emerald-600"
+					>À propos</a
 				>
 				<a
 					href="/contact"

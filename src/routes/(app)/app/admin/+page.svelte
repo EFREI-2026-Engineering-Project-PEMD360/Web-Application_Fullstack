@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { PageProps } from './$types';
-	import { 
-		Building2, 
+	import {
+		Building2,
 		Clock,
         MapPin,
         Calendar
@@ -84,7 +84,7 @@
 				{#each recentActivity as activity}
 					<li class="px-6 py-4 hover:bg-gray-50 transition-colors">
 						<div class="flex space-x-3">
-                            <div class="flex-shrink-0">
+                            <div class="shrink-0">
                                 <span class="inline-flex h-8 w-8 items-center justify-center rounded-full bg-emerald-100 text-emerald-600">
                                     <span class="text-xs font-bold leading-none">{activity.avatar}</span>
                                 </span>

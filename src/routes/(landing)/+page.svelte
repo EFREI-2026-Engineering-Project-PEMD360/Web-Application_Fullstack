@@ -1,10 +1,10 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import logoPEMD from '$lib/assets/img/PEMD 360.jpg';
+	import logoPEMD from '$lib/assets/img/pemd360.png';
 	import slideNumerisation from '$lib/assets/img/dépollution_8036_Copie.jpg';
 	import slideSuivi from '$lib/assets/img/suivi.jpg';
 	import slideDiagnostic from '$lib/assets/img/model_accueil.jpg';
-		import Header from '$lib/components/Header.svelte';
+	import Header from '$lib/components/Header.svelte';
 	import Footer from '$lib/components/Footer.svelte';
 
 	// Carousel state
@@ -49,11 +49,14 @@
 		return () => clearInterval(autoplayInterval);
 	});
 </script>
+
 <svelte:head>
 	<title>PEMD 360</title>
-	<meta name="description" content="Contactez Dépollution Conseil pour vos projets de diagnostic PEMD. Nous sommes à votre écoute." />
+	<meta
+		name="description"
+		content="Contactez Dépollution Conseil pour vos projets de diagnostic PEMD. Nous sommes à votre écoute."
+	/>
 </svelte:head>
-
 
 <!-- Hero Carousel -->
 <section class="relative h-[600px] w-full overflow-hidden">
@@ -154,7 +157,8 @@
 					</p>
 					<p class="text-justify leading-relaxed">
 						Dans un contexte d'économie circulaire, ce diagnostic vise à réduire la quantité de
-						déchets provenant des chantiers du BTP en accordant une part plus importante au réemploi.
+						déchets provenant des chantiers du BTP en accordant une part plus importante au
+						réemploi.
 					</p>
 					<p class="text-justify leading-relaxed">
 						Conformément au décret n°2021-872 du 30 juin 2021 recodifiant la partie réglementaire du
@@ -212,11 +216,11 @@
 <!-- CTA Section -->
 <section class="bg-linear-to-r from-emerald-600 to-emerald-700 py-12">
 	<div class="container mx-auto px-4">
-		<div class="flex flex-col items-center justify-between gap-6 text-center lg:flex-row lg:text-left">
+		<div
+			class="flex flex-col items-center justify-between gap-6 text-center lg:flex-row lg:text-left"
+		>
 			<div>
-				<h2 class="mb-2 text-2xl font-bold text-white md:text-3xl">
-					Nous vous guidons au mieux
-				</h2>
+				<h2 class="mb-2 text-2xl font-bold text-white md:text-3xl">Nous vous guidons au mieux</h2>
 				<p class="text-emerald-100">
 					Pour tous vos projets de démolition ou de rénovation significative, nous pouvons répondre
 					à vos besoins.

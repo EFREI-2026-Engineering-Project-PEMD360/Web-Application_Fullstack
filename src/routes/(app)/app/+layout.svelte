@@ -2,15 +2,24 @@
 	import { authClient } from '$lib/auth-client';
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
-	import logoPEMD from '$lib/assets/img/PEMD 360.jpg';
+	import logoPEMD from '$lib/assets/img/pemd360.png';
 	import favicon from '$lib/assets/favicon.png';
-	import { Menu, Gauge, ClipboardList, ClipboardList as ClipboardListAlt, Grid3x3, FolderOpen, LogOut , ShieldUser} from 'lucide-svelte';
+	import {
+		Menu,
+		Gauge,
+		ClipboardList,
+		ClipboardList as ClipboardListAlt,
+		Grid3x3,
+		FolderOpen,
+		LogOut,
+		ShieldUser
+	} from 'lucide-svelte';
 
 	let { children, data } = $props();
 
 	// Récupérer les données de session
 	const session = authClient.useSession();
-	
+
 	// Récupérer isAdmin depuis les données du serveur avec $derived
 	const isAdmin = $derived(data.isAdmin);
 
@@ -56,9 +65,9 @@
 			icon: FolderOpen
 		}
 	];
-	
+
 	// Filtrer les liens selon le rôle de l'utilisateur
-	const navLinks = $derived(allNavLinks.filter(link => !link.adminOnly || isAdmin));
+	const navLinks = $derived(allNavLinks.filter((link) => !link.adminOnly || isAdmin));
 
 	// Fonction pour vérifier si un lien est actif
 	function isActive(href: string): boolean {
@@ -143,8 +152,6 @@
 
 	<!-- Main Content -->
 	<main class="flex-1 overflow-y-auto">
-	
-
 		<!-- Page Content -->
 		<div class="p-6">
 			{@render children()}

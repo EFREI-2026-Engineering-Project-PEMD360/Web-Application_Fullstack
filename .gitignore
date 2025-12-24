@@ -30,4 +30,4 @@ bun.lock
 deno.lock
 pnpm-lock.yaml
 yarn.lock
-# package-lock.json we keep i guess
+# we keep package-lock.json as it is the canonical lockfile for npm

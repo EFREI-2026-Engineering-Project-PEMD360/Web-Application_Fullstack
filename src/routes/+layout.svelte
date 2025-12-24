@@ -1,7 +1,7 @@
 <script lang="ts">
 	import './layout.css';
-	import logoPEMD from '$lib/assets/img/PEMD 360.jpg';
-	import logoDC from '$lib/assets/img/Logo_DC.jpg';
+	import logoPEMD from '$lib/assets/img/pemd360.png';
+	import logoDC from '$lib/assets/img/depollution_conseil.png';
 	import favicon from '$lib/assets/favicon.png';
 	import { authClient } from '$lib/auth-client';
 
@@ -24,13 +24,8 @@
 </svelte:head>
 
 <div class="flex min-h-screen flex-col font-[Poppins]">
-
-
-
 	<!-- Main Content -->
 	<main class="flex-1">
 		{@render children()}
 	</main>
-
-
 </div>
