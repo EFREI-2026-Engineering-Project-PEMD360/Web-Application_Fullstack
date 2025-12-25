@@ -12,7 +12,8 @@
 		Grid3x3,
 		FolderOpen,
 		LogOut,
-		ShieldUser
+		ShieldUser,
+		TestTube2
 	} from 'lucide-svelte';
 
 	let { children, data } = $props();
@@ -63,6 +64,11 @@
 			href: '/app/cerfa',
 			label: 'Cerfa',
 			icon: FolderOpen
+		},
+		{
+			href: '/app/test',
+			label: 'Test',
+			icon: TestTube2
 		}
 	];
 
