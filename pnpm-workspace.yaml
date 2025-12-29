@@ -1,0 +1,6 @@
+onlyBuiltDependencies:
+  - '@matterport/sdk'
+  - better-sqlite3
+  - esbuild
+  - sharp
+  - workerd
