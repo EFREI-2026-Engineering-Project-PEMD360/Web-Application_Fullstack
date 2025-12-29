@@ -43,7 +43,8 @@
 		{
 			href: '/app/admin-db',
 			label: 'Utilisateurs',
-			icon: ShieldUser
+			icon: ShieldUser,
+			adminOnly: true
 		},
 		{
 			href: '/app/inventaire-risques',
