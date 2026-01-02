@@ -89,10 +89,43 @@
 				<h2 class="text-xl font-semibold text-gray-900">Informations Complémentaires</h2>
 			</div>
 
-			<p class="text-gray-600 italic">
-				D'autres informations relatives au projet pourraient être affichées ici, comme les types de
-				missions, les intervenants additionnels, ou les documents associés.
-			</p>
+			<div class="space-y-6">
+				<div>
+					<h3 class="text-lg font-medium text-gray-900 mb-3">Informations cadastrales</h3>
+					<div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+						<div class="bg-gray-50 p-4 rounded-lg">
+							<p class="text-sm text-gray-500 mb-1">Code INSEE</p>
+							<p class="text-base font-medium text-gray-900">{data.projet.codeInsee}</p>
+						</div>
+						<div class="bg-gray-50 p-4 rounded-lg">
+							<p class="text-sm text-gray-500 mb-1">Section</p>
+							<p class="text-base font-medium text-gray-900">{data.projet.section}</p>
+						</div>
+						<div class="bg-gray-50 p-4 rounded-lg">
+							<p class="text-sm text-gray-500 mb-1">Parcelle</p>
+							<p class="text-base font-medium text-gray-900">{data.projet.parcelle}</p>
+						</div>
+					</div>
+				</div>
+
+				<div class="border-t border-gray-100 pt-6">
+					<h3 class="text-lg font-medium text-gray-900 mb-3">Détails de l'opération</h3>
+					<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+						<div>
+							<p class="text-sm text-gray-500 mb-1">Type d'opération</p>
+							<p class="text-base font-medium text-gray-900">
+								{data.projet.typeOperation || 'Non spécifié'}
+							</p>
+						</div>
+						<div>
+							<p class="text-sm text-gray-500 mb-1">Date de fin prévisionnelle</p>
+							<p class="text-base font-medium text-gray-900">
+								{data.projet.dateDeFin ? formatDate(data.projet.dateDeFin) : 'Non définie'}
+							</p>
+						</div>
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
 </div>
