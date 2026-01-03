@@ -15,9 +15,9 @@
 		<h1 class="text-3xl font-bold text-gray-900">La liste des projets</h1>
 	</div>
 
-	<!-- Tableau responsive avec scroll horizontal -->
-	<div class="overflow-x-auto rounded-lg border border-gray-200 bg-white shadow-sm">
-		<table class="w-full min-w-max border-collapse">
+	<!-- Tableau -->
+	<div class="rounded-lg border border-gray-200 bg-white shadow-sm">
+		<table class="w-full border-collapse">
 			<!-- En-tête du tableau -->
 			<thead class="bg-gray-50">
 				<tr>
@@ -36,26 +36,6 @@
 						class="border-b border-gray-200 px-6 py-4 text-left text-sm font-semibold text-gray-900"
 					>
 						Nom du projet
-					</th>
-					<th
-						class="border-b border-gray-200 px-6 py-4 text-left text-sm font-semibold text-gray-900"
-					>
-						Adresse
-					</th>
-					<th
-						class="border-b border-gray-200 px-6 py-4 text-left text-sm font-semibold text-gray-900"
-					>
-						Ville
-					</th>
-					<th
-						class="border-b border-gray-200 px-6 py-4 text-left text-sm font-semibold text-gray-900"
-					>
-						Bureau d'étude
-					</th>
-					<th
-						class="border-b border-gray-200 px-6 py-4 text-left text-sm font-semibold text-gray-900"
-					>
-						Date demarrage
 					</th>
 					<th
 						class="border-b border-gray-200 px-6 py-4 text-left text-sm font-semibold text-gray-900"
@@ -90,26 +70,6 @@
 						<!-- Nom du projet -->
 						<td class="px-6 py-4">
 							<span class="text-sm text-gray-900">{projet.libelle}</span>
-						</td>
-
-						<!-- Adresse -->
-						<td class="px-6 py-4">
-							<span class="text-sm text-gray-700">{projet.rue}{projet.cp}</span>
-						</td>
-
-						<!-- Ville -->
-						<td class="px-6 py-4">
-							<span class="text-sm text-gray-700">{projet.ville}</span>
-						</td>
-
-						<!-- Bureau d'étude -->
-						<td class="px-6 py-4">
-							<span class="text-sm text-gray-700">{projet.maitreDOuvrage}</span>
-						</td>
-
-						<!-- Date demarrage -->
-						<td class="px-6 py-4">
-							<span class="text-sm text-gray-700">{formatDate(projet.dateDemarrage)}</span>
 						</td>
 
 						<!-- Information du projet -->
