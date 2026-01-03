@@ -2,6 +2,7 @@
 	import { authClient } from '$lib/auth-client';
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
+	import { fade } from 'svelte/transition';
 	import logoPEMD from '$lib/assets/img/pemd360.png';
 	import favicon from '$lib/assets/favicon.png';
 	import {
@@ -25,7 +26,7 @@
 	const isAdmin = $derived(data.isAdmin);
 
 	// Sidebar state
-	let sidebarOpen = $state(true);
+	let sidebarOpen = $state(false);
 
 	// Configuration centralisée des liens de navigation
 	const allNavLinks: Array<{ href: string; label: string; icon: any; adminOnly?: boolean }> = [
@@ -99,11 +100,22 @@
 </svelte:head>
 
 <div class="flex h-screen overflow-hidden bg-gray-50 font-[Poppins]">
+	<!-- Mobile Sidebar Overlay -->
+	{#if sidebarOpen}
+		<!-- svelte-ignore a11y_click_events_have_key_events -->
+		<!-- svelte-ignore a11y_no_static_element_interactions -->
+		<div 
+			class="fixed inset-0 z-40 bg-gray-900/50 lg:hidden"
+			onclick={() => sidebarOpen = false}
+			transition:fade={{ duration: 200 }}
+		></div>
+	{/if}
+
 	<!-- Sidebar -->
 	<aside
-		class="flex w-64 flex-col border-r border-gray-200 bg-white transition-all duration-300 {sidebarOpen
+		class="fixed inset-y-0 left-0 z-50 flex w-64 flex-col border-r border-gray-200 bg-white transition-transform duration-300 lg:static lg:translate-x-0 {sidebarOpen
 			? 'translate-x-0'
-			: '-translate-x-64'}"
+			: '-translate-x-full'}"
 	>
 		<!-- Logo -->
 		<div class="flex h-20 shrink-0 items-center justify-center border-b border-gray-200 px-4">
@@ -119,6 +131,9 @@
 					class="flex items-center gap-3 rounded-lg px-4 py-3 transition-colors {isActive(link.href)
 						? 'bg-emerald-600 text-white shadow-md'
 						: 'text-gray-700 hover:bg-emerald-50 hover:text-emerald-600'}"
+					onclick={() => {
+						if (window.innerWidth < 1024) sidebarOpen = false;
+					}}
 				>
 					<IconComponent class="h-5 w-5" />
 					<span class="font-medium">{link.label}</span>
@@ -154,9 +169,20 @@
 	</aside>
 
 	<!-- Main Content -->
-	<main class="flex-1 overflow-y-auto">
+	<main class="flex-1 overflow-y-auto min-w-0 w-full relative">
+		<!-- Mobile Header for Hamburger -->
+		<div class="sticky top-0 z-30 flex items-center border-b border-gray-200 bg-white px-4 py-2 lg:hidden">
+			<button 
+				class="rounded-lg p-2 text-gray-600 hover:bg-gray-100"
+				onclick={() => sidebarOpen = !sidebarOpen}
+			>
+				<Menu class="h-6 w-6" />
+			</button>
+			<span class="ml-3 font-semibold text-gray-900">Menu</span>
+		</div>
+
 		<!-- Page Content -->
-		<div class="p-6">
+		<div class="p-4 lg:p-6">
 			{@render children()}
 		</div>
 	</main>

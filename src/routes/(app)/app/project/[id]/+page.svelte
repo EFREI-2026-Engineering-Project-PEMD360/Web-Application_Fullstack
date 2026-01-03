@@ -10,17 +10,6 @@
 </script>
 
 <div class="font-[Poppins] max-w-4xl mx-auto px-4 py-8">
-	<!-- Fil d'ariane / Retour -->
-	<div class="mb-8">
-		<a
-			href="/app/dashboard"
-			class="inline-flex items-center gap-2 text-sm font-medium text-emerald-600 hover:text-emerald-700 transition-colors"
-		>
-			<ArrowLeft class="h-4 w-4" />
-			Retour au tableau de bord
-		</a>
-	</div>
-
 	<!-- Titre du projet -->
 	<div class="mb-8">
 		<h1 class="text-3xl font-bold text-gray-900 mb-2">{data.projet.libelle}</h1>
