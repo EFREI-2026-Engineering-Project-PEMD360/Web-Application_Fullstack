@@ -62,13 +62,49 @@
 				{
 					href: '/app/admin',
 					label: 'Administration DB',
-					icon: Gauge,
+					icon: null,
 					adminOnly: true
 				},
 				{
 					href: '/app/admin-db',
 					label: 'Utilisateurs',
-					icon: ShieldUser,
+					icon: null,
+					adminOnly: true
+				},
+				{
+					href: '/app/admin/societes',
+					label: 'Sociétés',
+					icon: null,
+					adminOnly: true
+				},
+				{
+					href: '/app/admin/etablissements',
+					label: 'Etablissements',
+					icon: null,
+					adminOnly: true
+				},
+				{
+					href: '/app/macro-categories',
+					label: 'Paramètres',
+					icon: null,
+					adminOnly: true
+				},
+				{
+					href: '/app/categories',
+					label: 'Paramètres',
+					icon: null,
+					adminOnly: true
+				},
+				{
+					href: '/app/objets',
+					label: 'Objets',
+					icon: null,
+					adminOnly: true
+				},
+				{
+					href: '/app/nature',
+					label: 'Nature',
+					icon: null,
 					adminOnly: true
 				}
 			]
