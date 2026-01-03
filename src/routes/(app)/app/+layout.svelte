@@ -14,8 +14,13 @@
 		FolderOpen,
 		LogOut,
 		ShieldUser,
-		TestTube2
+		TestTube2,
+		ChevronDown,
+		ChevronRight,
+		Settings,
+		Files
 	} from 'lucide-svelte';
+	import { slide } from 'svelte/transition';
 
 	let { children, data } = $props();
 
@@ -28,34 +33,61 @@
 	// Sidebar state
 	let sidebarOpen = $state(false);
 
+	// Type definition for navigation links
+	type NavLink = {
+		href?: string;
+		label: string;
+		icon: any;
+		adminOnly?: boolean;
+		subItems?: Array<{
+			href: string;
+			label: string;
+			icon: any;
+			adminOnly?: boolean;
+		}>;
+	};
+
 	// Configuration centralisée des liens de navigation
-	const allNavLinks: Array<{ href: string; label: string; icon: any; adminOnly?: boolean }> = [
+	const allNavLinks: NavLink[] = [
 		{
 			href: '/app/dashboard',
 			label: 'Mes projets',
 			icon: Menu
 		},
 		{
-			href: '/app/admin',
-			label: 'Administration DB',
-			icon: Gauge,
-			adminOnly: true
+			label: 'Administration',
+			icon: Settings,
+			adminOnly: true,
+			subItems: [
+				{
+					href: '/app/admin',
+					label: 'Administration DB',
+					icon: Gauge,
+					adminOnly: true
+				},
+				{
+					href: '/app/admin-db',
+					label: 'Utilisateurs',
+					icon: ShieldUser,
+					adminOnly: true
+				}
+			]
 		},
 		{
-			href: '/app/admin-db',
-			label: 'Utilisateurs',
-			icon: ShieldUser,
-			adminOnly: true
-		},
-		{
-			href: '/app/inventaire-risques',
-			label: 'Inventaire risques',
-			icon: ClipboardList
-		},
-		{
-			href: '/app/inventaire-pemd',
-			label: 'Inventaire PEMD',
-			icon: ClipboardListAlt
+			label: 'Inventaires',
+			icon: Files,
+			subItems: [
+				{
+					href: '/app/inventaire-risques',
+					label: 'Inventaire risques',
+					icon: ClipboardList
+				},
+				{
+					href: '/app/inventaire-pemd',
+					label: 'Inventaire PEMD',
+					icon: ClipboardListAlt
+				}
+			]
 		},
 		{
 			href: '/app/tableau-synthese',
@@ -74,8 +106,26 @@
 		}
 	];
 
+	// State for expanded submenus
+	let expandedMenus = $state<Record<string, boolean>>({
+		'Administration': true,
+		'Inventaires': true
+	});
+
+	function toggleMenu(label: string) {
+		expandedMenus[label] = !expandedMenus[label];
+	}
+
 	// Filtrer les liens selon le rôle de l'utilisateur
-	const navLinks = $derived(allNavLinks.filter((link) => !link.adminOnly || isAdmin));
+	const navLinks = $derived(allNavLinks.filter((link) => {
+		if (link.adminOnly && !isAdmin) return false;
+		// If it has subItems, check if at least one visible subItem exists
+		if (link.subItems) {
+			const visibleSubItems = link.subItems.filter(sub => !sub.adminOnly || isAdmin);
+			return visibleSubItems.length > 0;
+		}
+		return true;
+	}));
 
 	// Fonction pour vérifier si un lien est actif
 	function isActive(href: string): boolean {
@@ -123,21 +173,63 @@
 		</div>
 
 		<!-- Navigation - scrollable -->
-		<nav class="flex-1 space-y-1 overflow-y-auto p-4">
+		<nav class="flex-1 space-y-1 overflow-y-auto p-4 custom-scrollbar">
 			{#each navLinks as link}
 				{@const IconComponent = link.icon}
-				<a
-					href={link.href}
-					class="flex items-center gap-3 rounded-lg px-4 py-3 transition-colors {isActive(link.href)
-						? 'bg-emerald-600 text-white shadow-md'
-						: 'text-gray-700 hover:bg-emerald-50 hover:text-emerald-600'}"
-					onclick={() => {
-						if (window.innerWidth < 1024) sidebarOpen = false;
-					}}
-				>
-					<IconComponent class="h-5 w-5" />
-					<span class="font-medium">{link.label}</span>
-				</a>
+				
+				{#if link.subItems && link.subItems.length > 0}
+					<div class="rounded-lg overflow-hidden">
+						<button
+							class="flex w-full items-center justify-between gap-3 px-4 py-3 text-gray-700 hover:bg-emerald-50 hover:text-emerald-600 transition-colors"
+							onclick={() => toggleMenu(link.label)}
+						>
+							<div class="flex items-center gap-3">
+								<IconComponent class="h-5 w-5" />
+								<span class="font-medium">{link.label}</span>
+							</div>
+							{#if expandedMenus[link.label]}
+								<ChevronDown class="h-4 w-4" />
+							{:else}
+								<ChevronRight class="h-4 w-4" />
+							{/if}
+						</button>
+						
+						{#if expandedMenus[link.label]}
+							<div class="bg-gray-50 space-y-1 py-1" transition:slide={{ duration: 200 }}>
+								{#each link.subItems as subLink}
+									{@const SubIconComponent = subLink.icon}
+									{#if !subLink.adminOnly || isAdmin}
+										<a
+											href={subLink.href}
+											class="flex items-center gap-3 pl-11 pr-4 py-2 text-sm transition-colors {isActive(subLink.href)
+												? 'text-emerald-600 font-medium'
+												: 'text-gray-600 hover:text-emerald-600'}"
+											onclick={() => {
+												if (window.innerWidth < 1024) sidebarOpen = false;
+											}}
+										>
+											<SubIconComponent class="h-4 w-4" />
+											<span>{subLink.label}</span>
+										</a>
+									{/if}
+								{/each}
+							</div>
+						{/if}
+					</div>
+				{:else}
+					<a
+						href={link.href}
+						class="flex items-center gap-3 rounded-lg px-4 py-3 transition-colors {isActive(link.href!)
+							? 'bg-emerald-600 text-white shadow-md'
+							: 'text-gray-700 hover:bg-emerald-50 hover:text-emerald-600'}"
+						onclick={() => {
+							if (window.innerWidth < 1024) sidebarOpen = false;
+						}}
+					>
+						<IconComponent class="h-5 w-5" />
+						<span class="font-medium">{link.label}</span>
+					</a>
+				{/if}
 			{/each}
 		</nav>
 

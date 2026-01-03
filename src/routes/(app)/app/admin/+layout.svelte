@@ -19,8 +19,6 @@
 		{ section: 'Organisation' },
 		{ name: 'Sociétés', href: '/app/admin/societes', icon: Building2 },
 		{ name: 'Etablissements', href: '/app/admin/etablissements', icon: Store },
-		{ name: 'Projets', href: '/app/admin/projets', icon: FolderKanban },
-		{ name: 'Utilisateurs', href: '/app/admin/utilisateurs', icon: Users },
 		{ section: 'Configuration' },
 		{ name: 'Macro-catégories', href: '/app/admin/macro-categories', icon: Layers },
 		{ name: 'Catégories', href: '/app/admin/categories', icon: Tags },
