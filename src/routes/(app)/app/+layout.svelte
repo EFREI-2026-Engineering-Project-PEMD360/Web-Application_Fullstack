@@ -50,8 +50,8 @@
 	// Configuration centralisée des liens de navigation
 	const allNavLinks: NavLink[] = [
 		{
-			href: '/app/dashboard',
-			label: 'Mes projets',
+			href: '/app/projets',
+			label: 'Projets',
 			icon: Menu
 		},
 		{
@@ -60,13 +60,7 @@
 			adminOnly: true,
 			subItems: [
 				{
-					href: '/app/admin',
-					label: 'Administration DB',
-					icon: null,
-					adminOnly: true
-				},
-				{
-					href: '/app/admin-db',
+					href: '/app/admin/utilisateurs',
 					label: 'Utilisateurs',
 					icon: null,
 					adminOnly: true
@@ -84,26 +78,26 @@
 					adminOnly: true
 				},
 				{
-					href: '/app/macro-categories',
-					label: 'Paramètres',
-					icon: null,
-					adminOnly: true
-				},
-				{
-					href: '/app/categories',
-					label: 'Paramètres',
-					icon: null,
-					adminOnly: true
-				},
-				{
-					href: '/app/objets',
-					label: 'Objets',
-					icon: null,
-					adminOnly: true
-				},
-				{
-					href: '/app/nature',
+					href: '/app/admin/nature',
 					label: 'Nature',
+					icon: null,
+					adminOnly: true
+				},
+				{
+					href: '/app/admin/macro-categories',
+					label: 'Macro-categories',
+					icon: null,
+					adminOnly: true
+				},
+				{
+					href: '/app/admin/categories',
+					label: 'Categories',
+					icon: null,
+					adminOnly: true
+				},
+				{
+					href: '/app/admin/objets',
+					label: 'Objets',
 					icon: null,
 					adminOnly: true
 				}
@@ -114,12 +108,12 @@
 			icon: Files,
 			subItems: [
 				{
-					href: '/app/inventaire-risques',
+					href: '/app/inventaire/risques',
 					label: 'Inventaire risques',
 					icon: ClipboardList
 				},
 				{
-					href: '/app/inventaire-pemd',
+					href: '/app/inventaire/pemd',
 					label: 'Inventaire PEMD',
 					icon: ClipboardListAlt
 				}
@@ -233,7 +227,6 @@
 						{#if expandedMenus[link.label]}
 							<div class="bg-gray-50 space-y-1 py-1" transition:slide={{ duration: 200 }}>
 								{#each link.subItems as subLink}
-									{@const SubIconComponent = subLink.icon}
 									{#if !subLink.adminOnly || isAdmin}
 										<a
 											href={subLink.href}
@@ -244,7 +237,6 @@
 												if (window.innerWidth < 1024) sidebarOpen = false;
 											}}
 										>
-											<SubIconComponent class="h-4 w-4" />
 											<span>{subLink.label}</span>
 										</a>
 									{/if}
