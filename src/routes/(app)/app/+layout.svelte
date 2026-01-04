@@ -128,11 +128,6 @@
 			href: '/app/cerfa',
 			label: 'Cerfa',
 			icon: FolderOpen
-		},
-		{
-			href: '/app/test',
-			label: 'Test',
-			icon: TestTube2
 		}
 	];
 
