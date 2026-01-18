@@ -494,7 +494,7 @@ onMount(() => {
 		(async () => {
 			try {
 				const { connect } = await import('@matterport/sdk');
-				mpSdk = await connect(iframe);
+				mpSdk = await connect(iframe, data.matterportSdkKey);
 				// Shim: if SDK supports Tag API, forward Mattertag calls to Tag to avoid deprecation warnings
 				if (mpSdk && mpSdk.Tag) {
 					mpSdk.Mattertag = mpSdk.Mattertag || {};
@@ -885,7 +885,7 @@ onMount(() => {
 			title="Matterport Showcase"
 			class="h-full w-full"
 			src="https://my.matterport.com/show?m={data.projet
-				.id}&play=1&applicationKey=wxdq9q4dpay6wcrm41b1ynnib"
+				.id}&play=1&applicationKey={data.matterportSdkKey}"
 			frameborder="0"
 			allow="fullscreen; vr"
 		>

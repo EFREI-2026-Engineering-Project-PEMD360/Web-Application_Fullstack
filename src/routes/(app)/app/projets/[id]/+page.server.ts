@@ -1,5 +1,6 @@
 import type { PageServerLoad } from './$types';
 import { error } from '@sveltejs/kit';
+import { env } from '$env/dynamic/private';
 import { db } from '$lib/server/db/client';
 import { projet, etablissement, user, tagMail, tagsAmiante, tagsPlomb, tagsTermite, tagsStructure, pemd, groupe, categorieV2, objets } from '$lib/server/db/schema';
 import { eq } from 'drizzle-orm';
@@ -90,6 +91,7 @@ export const load: PageServerLoad = async ({ params, locals }) => {
         pemdFacets: pemdFacets,
         groups: allGroups,
         categoriesV2: categoriesV2,
-        allPemdObjects: allPemdObjects
+        allPemdObjects: allPemdObjects,
+        matterportSdkKey: env.MATTERPORT_SDK_KEY
     };
 };
