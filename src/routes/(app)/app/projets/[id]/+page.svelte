@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import type { PageData } from './$types';
+	import type { MpSdk } from '@matterport/sdk';
 	import tagAmianteImg from '$lib/assets/img/tagamiante.gif';
 	import tagPlombImg from '$lib/assets/img/tagplomb.gif';
 	import tagTermiteImg from '$lib/assets/img/tagtermite.gif';
@@ -11,7 +12,7 @@
 	let { data }: { data: PageData } = $props();
 
 	let iframe: HTMLIFrameElement;
-	let mpSdk: any;
+	let mpSdk: MpSdk | undefined = $state();
 
 	let showMail = $state(false);
 	let showAmiante = $state(false);
@@ -493,8 +494,8 @@ onMount(() => {
 		let handleUnhandledRejection: (ev: PromiseRejectionEvent) => void;
 		(async () => {
 			try {
-				const { connect } = await import('@matterport/sdk');
-				mpSdk = await connect(iframe, data.matterportSdkKey);
+				const { setupSdk } = await import('@matterport/sdk');
+				mpSdk = await setupSdk(data.matterportSdkKey, { iframe });
 				// Shim: if SDK supports Tag API, forward Mattertag calls to Tag to avoid deprecation warnings
 				if (mpSdk && mpSdk.Tag) {
 					mpSdk.Mattertag = mpSdk.Mattertag || {};
@@ -885,7 +886,7 @@ onMount(() => {
 			title="Matterport Showcase"
 			class="h-full w-full"
 			src="https://my.matterport.com/show?m={data.projet
-				.id}&play=1&applicationKey={data.matterportSdkKey}"
+				.id}&play=1"
 			frameborder="0"
 			allow="fullscreen; vr"
 		>
