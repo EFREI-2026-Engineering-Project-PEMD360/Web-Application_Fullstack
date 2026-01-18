@@ -493,8 +493,7 @@ onMount(() => {
 		let handleUnhandledRejection: (ev: PromiseRejectionEvent) => void;
 		(async () => {
 			try {
-				// @ts-ignore
-				const { connect } = await import('$lib/matterport/sdk.es6.js');
+				const { connect } = await import('@matterport/sdk');
 				mpSdk = await connect(iframe);
 				// Shim: if SDK supports Tag API, forward Mattertag calls to Tag to avoid deprecation warnings
 				if (mpSdk && mpSdk.Tag) {

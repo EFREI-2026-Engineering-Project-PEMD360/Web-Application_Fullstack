@@ -76,7 +76,6 @@ src/
 │   │   └── excel.ts               # Excel export utilities
 │   ├── components/                # Reusable Svelte components
 │   ├── stores/                    # Svelte stores
-│   ├── matterport/                # Matterport 3D viewer integration
 │   └── assets/
 ├── routes/
 │   ├── (landing)/                 # Public landing pages (unauth)
