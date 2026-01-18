@@ -286,8 +286,7 @@
 
 	onMount(async () => {
 		try {
-			// @ts-ignore
-			const { connect } = await import('$lib/matterport/sdk.es6.js');
+			const { connect } = await import('@matterport/sdk');
 			mpSdk = await connect(iframe);
 			console.log('Matterport SDK connected', mpSdk);
 		} catch (e) {
