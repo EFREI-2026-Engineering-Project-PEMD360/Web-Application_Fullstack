@@ -5,70 +5,75 @@ import type { Actions, PageServerLoad } from './$types';
 import { fail } from '@sveltejs/kit';
 
 export const load: PageServerLoad = async () => {
-    const groupes = await db.select().from(groupe).all();
-    return {
-        groupes
-    };
+	const groupes = await db.select().from(groupe).all();
+
+	const collator = new Intl.Collator(undefined, { numeric: true, sensitivity: 'base' });
+	groupes.sort((a, b) => collator.compare(a.groupe || '', b.groupe || ''));
+
+	return {
+		groupes
+	};
 };
 
 export const actions: Actions = {
-    create: async ({ request }) => {
-        const formData = await request.formData();
-        const groupeName = formData.get('groupe') as string;
-        
-        if (!groupeName) {
-            return fail(400, { message: 'Le nom du groupe est requis' });
-        }
+	create: async ({ request }) => {
+		const formData = await request.formData();
+		const groupeName = formData.get('groupe') as string;
 
-        try {
-            await db.insert(groupe).values({
-                groupe: groupeName,
-            });
+		if (!groupeName) {
+			return fail(400, { message: 'Le nom du groupe est requis' });
+		}
 
-            return { success: true };
-        } catch (e: any) {
-            console.error('Error creating groupe:', e);
-            return fail(500, { message: 'Erreur lors de la création' });
-        }
-    },
+		try {
+			await db.insert(groupe).values({
+				groupe: groupeName
+			});
 
-    update: async ({ request }) => {
-        const formData = await request.formData();
-        const id = Number(formData.get('id'));
-        const groupeName = formData.get('groupe') as string;
+			return { success: true };
+		} catch (e: any) {
+			console.error('Error creating groupe:', e);
+			return fail(500, { message: 'Erreur lors de la création' });
+		}
+	},
 
-        if (!id || !groupeName) {
-            return fail(400, { message: 'ID et nom du groupe requis' });
-        }
+	update: async ({ request }) => {
+		const formData = await request.formData();
+		const id = Number(formData.get('id'));
+		const groupeName = formData.get('groupe') as string;
 
-        try {
-            await db.update(groupe)
-                .set({
-                    groupe: groupeName,
-                })
-                .where(eq(groupe.id, id));
+		if (!id || !groupeName) {
+			return fail(400, { message: 'ID et nom du groupe requis' });
+		}
 
-            return { success: true };
-        } catch (e: any) {
-            console.error('Error updating groupe:', e);
-            return fail(500, { message: 'Erreur lors de la mise à jour' });
-        }
-    },
+		try {
+			await db
+				.update(groupe)
+				.set({
+					groupe: groupeName
+				})
+				.where(eq(groupe.id, id));
 
-    delete: async ({ request }) => {
-        const formData = await request.formData();
-        const id = Number(formData.get('id'));
+			return { success: true };
+		} catch (e: any) {
+			console.error('Error updating groupe:', e);
+			return fail(500, { message: 'Erreur lors de la mise à jour' });
+		}
+	},
 
-        if (!id) {
-            return fail(400, { message: 'ID requis' });
-        }
+	delete: async ({ request }) => {
+		const formData = await request.formData();
+		const id = Number(formData.get('id'));
 
-        try {
-            await db.delete(groupe).where(eq(groupe.id, id));
-            return { success: true };
-        } catch (e: any) {
-            console.error('Error deleting groupe:', e);
-            return fail(500, { message: 'Erreur lors de la suppression' });
-        }
-    }
+		if (!id) {
+			return fail(400, { message: 'ID requis' });
+		}
+
+		try {
+			await db.delete(groupe).where(eq(groupe.id, id));
+			return { success: true };
+		} catch (e: any) {
+			console.error('Error deleting groupe:', e);
+			return fail(500, { message: 'Erreur lors de la suppression' });
+		}
+	}
 };
