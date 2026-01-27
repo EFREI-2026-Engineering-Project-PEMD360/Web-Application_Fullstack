@@ -216,7 +216,8 @@
 		try {
 			const res = await authClient.admin.setRole({
 				userId: selectedUser.id,
-				role: editForm.role as 'user' | 'admin'
+				userId: selectedUser.id,
+				role: editForm.role as 'user' | 'admin' | 'collaborateur'
 			});
 			if (res.error) {
 				showToast('Échec de la mise à jour : ' + res.error.message, 'error');
@@ -251,7 +252,9 @@
 				email: createForm.email,
 				password: createForm.password,
 				name: createForm.name,
-				role: createForm.role as 'user' | 'admin'
+				password: createForm.password,
+				name: createForm.name,
+				role: createForm.role as 'user' | 'admin' | 'collaborateur'
 			});
 
 			if (res.data) {
@@ -597,6 +600,18 @@
 									>
 										Admin
 									</span>
+								{:else if user.role === 'collaborateur'}
+									<span
+										class="inline-flex items-center rounded-full bg-blue-100 px-2 py-0.5 text-xs font-medium text-blue-700"
+									>
+										Collaborateur
+									</span>
+								{:else}
+									<span
+										class="inline-flex items-center rounded-full bg-slate-100 px-2 py-0.5 text-xs font-medium text-slate-700"
+									>
+										Utilisateur
+									</span>
 								{/if}
 							</div>
 							<p class="truncate text-sm text-slate-500">{user.email}</p>
@@ -916,6 +931,7 @@
 								>
 									<option value="user">Utilisateur</option>
 									<option value="admin">Administrateur</option>
+									<option value="collaborateur">Collaborateur</option>
 								</select>
 							</div>
 							<div>
@@ -1079,6 +1095,7 @@
 								>
 									<option value="user">Utilisateur</option>
 									<option value="admin">Administrateur</option>
+									<option value="collaborateur">Collaborateur</option>
 								</select>
 							</div>
 						</div>

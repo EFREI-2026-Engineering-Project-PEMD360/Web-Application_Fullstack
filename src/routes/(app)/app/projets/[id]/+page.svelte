@@ -1457,6 +1457,7 @@
 					class={`h-8 w-8 object-contain transition-transform ${showPemd ? 'scale-110' : ''}`}
 				/>
 			</button>
+			{#if data.user?.role === 'admin' || data.user?.role === 'collaborateur'}
 			<button
 				type="button"
 				title={pemdEditMode ? 'Désactiver le mode édition PEMD' : 'Activer le mode édition PEMD'}
@@ -1467,6 +1468,7 @@
 				<Pencil size={12} class="mr-1" />
 				{pemdEditMode ? 'Édition ON' : 'Éditer'}
 			</button>
+			{/if}
 		</div>
 	</div>
 
